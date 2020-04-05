@@ -1,7 +1,7 @@
 import axios from 'axios';
 const endPoint = "http://34.206.72.199:3001/api/pc"
 export const getWorkCellService = () => {
-    return axios.get(`/workcell/`).then((res) => res.data);
+    return axios.get(`/breeds/image/random`).then((res) => res.data);
 };
 export const getPanelShopService = (id) => {
     return axios.get(`$/employee/${id}`).then((res) => res.data);
