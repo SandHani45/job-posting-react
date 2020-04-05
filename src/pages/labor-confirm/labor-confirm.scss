@@ -1,0 +1,17 @@
+.ui-grid{
+    display: flex;
+    width: 40%;
+    p{
+        margin-right: 25px;
+        width: 89px;
+    }
+    p:nth-child(3){
+        margin-right: 25px;
+        width: 200px;
+    }
+}
+.start-button{
+    padding: 57px;
+    height: fit-content;
+    font-size: 28px;
+}
