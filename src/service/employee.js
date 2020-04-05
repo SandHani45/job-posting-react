@@ -1,5 +1,5 @@
 import axios from 'axios';
-const endPoint = "https://dog.ceo/api/breeds/image/random"
+const endPoint = "https://dog.ceo/api"
 export const getWorkCellService = () => {
     return axios.get(`${endPoint}/breeds/image/random/`).then((res) => res.data);
 };
