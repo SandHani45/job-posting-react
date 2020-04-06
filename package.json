@@ -11,6 +11,7 @@
     "antd": "^4.0.3",
     "axios": "^0.19.2",
     "classnames": "^2.2.6",
+    "http-proxy-middleware": "^1.0.3",
     "node-sass": "^4.13.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
@@ -37,6 +38,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "proxy": "http://34.206.72.199:3001"
+  }
 }
