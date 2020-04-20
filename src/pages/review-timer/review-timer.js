@@ -86,13 +86,7 @@ function ReviewTimer() {
       {workCellData.length > 0 ? workCellData.map(item=><Option value={item.WORK_CELL_NAME} >{item.WORK_CELL_NAME}</Option>) : null}
     </>;
      const contentHtmlForEmployee = <>
-      {panelShop.length > 0 ? panelShop.map(item=>{
-        <>
-         
-            <Option value={item.NAME} >{item.NAME}</Option>
-         
-        </>
-      }) : null}
+      {panelShop.length > 0 ? panelShop.map(item=><Option value={item.NAME} >{item.NAME}</Option>) : null}
     </>;
     return (
       <>
