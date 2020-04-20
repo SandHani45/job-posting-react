@@ -88,9 +88,9 @@ function ReviewTimer() {
      const contentHtmlForEmployee = <>
       {panelShop.length > 0 ? panelShop.map(item=>{
         <>
-          <Select defaultValue={apiFetchData.employeeUpdate.length > 0 ?  item.NAME: pendingLaborRecord.EMPLOYEE_NAME}  name="employee">
+         
             <Option value={item.NAME} >{item.NAME}</Option>
-          </Select>
+         
         </>
       }) : null}
     </>;
@@ -117,7 +117,9 @@ function ReviewTimer() {
             </UiGrid>
             <UiGrid title="Employee" >
               <Input.Group compact>
-                {contentHtmlForEmployee}
+                <Select defaultValue={apiFetchData.employeeUpdate.length > 0 ?  '': pendingLaborRecord.EMPLOYEE_NAME}  name="employee">
+                  {contentHtmlForEmployee}
+                </Select>
               </Input.Group>
             </UiGrid>
             <UiGrid title="Labor Activity" >
