@@ -1,4 +1,5 @@
 import React, { createContext, useReducer } from "react";
+import _ from 'lodash'
 import AppReducer from "./AppReducer";
 import { 
     getWorkCellService, 
@@ -7,13 +8,19 @@ import {
     getLaborActivityService,
     getLaborConfirmService 
 } from './../service/employee'
+import {getPendingLaborService ,getProgressTimeStop} from './../service/pendingLabor'
 const initialState = {
   workCellData:[],
   panelShop:[],
   jobPosting:[],
   keyData:[],
   laborActivity: [],
-  laborConfirm: {}
+  laborConfirm: {},
+  pendingLabor:{},
+  startTime:0,
+  endTime:null,
+  isActive:false,
+  pendingLaborRecord:{}
 };
 
 export const GlobalContext = createContext(initialState);
@@ -51,7 +58,6 @@ export const GlobalProvider = ({ children }) => {
         }else{
 
        }
-
     })
   }
 
@@ -63,6 +69,16 @@ export const GlobalProvider = ({ children }) => {
       });
     })
   }
+
+  function getProgressTimeStop(key) {
+    getProgressTimeStop(key).then((res)=>{
+        dispatch({
+          type: "GET_PROGRESS_TIME_STOP",
+          payload: res
+      });
+    })
+  }
+  
   function getKeyData(keyName, keyValue) {
     if(keyName === 'workcell'){
       keyEmpty()
@@ -87,15 +103,59 @@ export const GlobalProvider = ({ children }) => {
         payload: keyValue
       });
     }
-
+    if(keyName === 'work_center'){
+      let data = state.keyData
+      data.splice(3, data.length-1);
+      dispatch({
+        type: "GET_KEY_DATA",
+        payload: keyValue
+      });
+    }
   }
+
   function keyEmpty() {
     dispatch({
         type: "GET_KEY_DATA_EMPTY",
         payload: []
     });
   }
+  
+  function getPendingLabor() {
+    getPendingLaborService().then((res)=>{
+      dispatch({
+        type: "GET_PENDING_LABOR",
+        payload: res
+      });
+    })
+  }
 
+  function startTimer(count) {
+    dispatch({
+      type: "GET_START_TIME",
+      payload: count
+    });
+  }
+
+  function isActiveFun(value) {
+    dispatch({
+      type: "GET_IS_ACTIVE",
+      payload: value
+    });
+  }
+// laborPending
+function getPendingLaborRecord(id){
+  getPendingLaborService(id).then((res)=>{
+    let pendingLaborKeyData = _.find(res, function(o) { 
+      if(o.KEY == id){
+          return o
+      }
+    });
+    dispatch({
+      type: "GET_PENDING_LABOR_RECORD",
+      payload: pendingLaborKeyData
+    });
+})
+}
   return (
     <GlobalContext.Provider
       value={{
@@ -104,12 +164,21 @@ export const GlobalProvider = ({ children }) => {
         keyData: state.keyData,
         laborActivity: state.laborActivity,
         laborConfirm:state.laborConfirm,
+        pendingLabor:state.pendingLabor,
+        startTime:state.startTime,
+        endTime:state.endTime,
+        isActive:state.isActive,
+        pendingLaborRecord:state.pendingLaborRecord,
         getWorkCell,
+        getPendingLabor,
         getPanalShop,
         getKeyData,
         getWorkOrder,
         getLaborConfirm,
-        keyEmpty
+        keyEmpty,
+        startTimer,
+        isActiveFun,
+        getPendingLaborRecord
       }}
     >
       {children}

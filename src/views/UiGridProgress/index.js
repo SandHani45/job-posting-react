@@ -3,44 +3,55 @@ import React from 'react'
 import UiTimerButton from './../UiTimerButton'
 //antd
 import { Row,Col } from 'antd';
+import './ui-grid-progress.scss'
 function UiGridProgress(props) {
-    const { employe,worder,lactivity,start_time} = props;
+    const { employe,wOrder,lactivity,start_time,start_time_count, employeName,wcName,woDes, timerHandler} = props;
     const style = {  padding: '8px 0' };
+    const styles = {
+        bold:{
+            fontWeight:'bold'
+        },
+        colorGreen:{
+            color:'green',
+            padding: '8px 0',
+            fontWeight: '500'
+        }
+    }
     return (
     <React.Fragment>
          <div className="ui-grid-progress" >
             <hr></hr>
             <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                <Col className="gutter-row" span={2}>
-                    <div style={style}>
+                <Col className="gutter-row" span={3}>
+                    <div style={style} >
                         <p>Employee</p>
                         <p>Work Order</p>
                         <p>Labor Activity</p>
                     </div>
                 </Col>
-                <Col className="gutter-row" span={2}>
-                    <div style={style}>
-                        <p>227</p>
-                        <p>1803530</p>
-                        <p>1811</p>
+                <Col className="gutter-row" span={3}>
+                    <div style={styles.bold} className="ui-grid-progress__grid">
+                        <p>{employe}</p>
+                        <p>{wOrder}</p>
+                        <p>{lactivity}</p>
                     </div>
                 </Col>
-                <Col className="gutter-row" span={10}>
-                    <div style={style}>
-                        <p>Jessy</p>
-                        <p>SMS PROGRESS </p>
-                        <p>Wring </p>
+                <Col className="gutter-row" span={8}>
+                    <div style={style} className="ui-grid-progress__grid">
+                        <p style={styles.bold}>{employeName}</p>
+                        <p>{woDes} </p>
+                        <p style={styles.bold}>{wcName} </p>
                     </div>
                 </Col>
                 <Col className="gutter-row" span={4}>
-                    <div style={style}>
-                        <p>Start Time</p>
-                        <p>12:54 pm </p>
+                    <div className="ui-grid-progress__grid">
+                        <p style={styles.colorGreen}>Start Time</p>
+                        <p style={styles.bold}>{start_time}</p>
                     </div>
                 </Col>
                 <Col className="gutter-row" span={6}>
-                    <div style={style}>
-                        <UiTimerButton name="Elasped" time='30:30' hours='HoursMinutes'/>
+                    <div style={style} className="ui-grid-progress__grid">
+                        <UiTimerButton name="Elasped" time={start_time_count} hours='HoursMinutes' color="green" timerHandler={timerHandler}/>
                     </div>
                 </Col>
             </Row>

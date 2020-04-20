@@ -1,6 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import "antd/dist/antd.css";
+//Grid
+import 'ag-grid-community/dist/styles/ag-grid.css'
+import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+
 import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';

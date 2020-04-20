@@ -4,7 +4,11 @@ import JobPosting from './../pages/job-posting/job-posting';
 import LaborActivity from './../pages/labor-activity/labor-activity';
 import LaborConfirm from './../pages/labor-confirm/labor-confirm';
 import ProgressTimers from './../pages/progress-timers/progress-timers';
-import ReviewTimer from './../pages/review-timer/review-timer'
+import ReviewTimer from './../pages/review-timer/review-timer';
+import ProgressTimeStop from './../pages/progress-time-stop/progress-time-stop';
+import LaborRecordComplete from './../pages/labor-record-complete/labor-record-complete'
+import LaborReviewAndPosting from './../pages/labor-review-and-posting/labor-review-and-posting';
+
 export const Routes = [
     {
         component: WorkCell,
@@ -32,21 +36,38 @@ export const Routes = [
     },
     {
         component: LaborConfirm,
-        path: '/labor-confirm/',
+        path: '/labor-confirm',
         exact: true,
         title: 'labor-confirm'
     },
     {
         component: ProgressTimers,
-        path: '/progress-timers/',
+        path: '/progress-timers',
         exact: true,
         title: 'ProgressTimers'
     },
     {
         component: ReviewTimer,
-        path: '/review-timer/',
+        path: '/review-timer',
         exact: true,
         title: 'ReviewTimer'
     },
-    
+    {
+        component: ProgressTimeStop,
+        path: '/progress-time-stop/:id',
+        exact: true,
+        title: 'ProgressTimeStop'
+    },
+    {
+        component: LaborRecordComplete,
+        path: '/labor-record-complete/:id',
+        exact: true,
+        title: 'LaborRecordComplete'
+    },
+    {
+        component: LaborReviewAndPosting,
+        path: '/labor-review-and-posting',
+        exact: true,
+        title: 'LaborReviewAndPosting'
+    },
 ];

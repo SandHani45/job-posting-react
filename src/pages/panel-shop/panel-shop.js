@@ -20,7 +20,7 @@ import { GlobalContext } from "./../../context//GlobalState";
     }, [1]);
 
     function jobPosting (key) {
-      let data = panelShop[0]
+      let data = panelShop
       let keyValue;
       data.map(item=>{
           if(item.EMPLOYEE === key){
@@ -35,7 +35,7 @@ import { GlobalContext } from "./../../context//GlobalState";
         <>
         <UiPageHeader content={Constants.WORKCELL} />
           <Row gutter={16}>
-            {panelShop.length >= 1 ? panelShop[0].map((item, index)=>{
+            {panelShop.length >= 1 ? panelShop.map((item, index)=>{
               return <UiCard key={index } text={`#${item.EMPLOYEE}`} name={item.NAME} onClickHandler={() => jobPosting(item.EMPLOYEE)}/>
             }):  null}
           </Row>

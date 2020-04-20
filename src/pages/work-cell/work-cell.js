@@ -20,7 +20,7 @@ function WorkCell() {
     }, [page]);
 
   const panelShopClick = (key) => {
-    let data = workCellData[0]
+    let data = workCellData
     let keyValue;
     data.map(item=>{
         if(item.DEPARTMENT_KEY === key){
@@ -36,8 +36,8 @@ function WorkCell() {
     <>
       <UiPageHeader content={Constants.WORKCELL} />
       <Row gutter={16}>
-        {workCellData.length >= 1 ? workCellData[0].map((item, index)=>{
-          return <UiCard key={item.KEY } text={item.DEPARTMENT_NAME} onClickHandler={() => panelShopClick(item.DEPARTMENT_KEY)}/>
+        {workCellData.length >= 1 ? workCellData.map((item, index)=>{
+          return <UiCard key={item.KEY } text={item.DEPARTMENT_NAME} name={item.WORK_CELL_NAME} onClickHandler={() => panelShopClick(item.DEPARTMENT_KEY)}/>
         }) : null}
       </Row>
     </>

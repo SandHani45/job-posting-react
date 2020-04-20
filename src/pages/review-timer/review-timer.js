@@ -11,6 +11,9 @@ import {
   } from 'antd';
 
 import moment from 'moment';
+// context
+import { GlobalContext } from "./../../context/GlobalState";
+import {useHistory,useParams} from 'react-router-dom';
 import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
   //components
 import UiPageHeader from './../../views/UiPageHeader'
@@ -24,99 +27,157 @@ import './review-timer.scss'
   const { Option } = Select;
   const format = 'HH:mm';
   const { TextArea } = Input;
-  
-  function ReviewTimer() {
-    const onFinish = values => {
-      console.log('Received values of form: ', values);
-    };
+
+
+function ReviewTimer() {
+  const history = useHistory();
+  const {pendingLaborRecord,panelShop, workCellData, getWorkCell, getPanalShop } = useContext(GlobalContext);
+  const [page, setPage] = useState(1);
+  const [apiFetchData, setApiFetchData] = useState({
+    workCellUpdate:{},
+    employeeUpdate:{},
+    laborActivityUpdate:{}
+  });
+  const [laborRecord, setLaborRecord] = useState({
+      workOrder: "",
+      workCellName: "",
+      employee: "",
+      laborActivity: "",
+      startTime: "",
+      startDate:"",
+      stopTime:'',
+      stopDate:'',
+      note:''
+    });
+    useEffect(() => {
+      getWorkCell()
+      setLaborRecord({
+        workOrder:pendingLaborRecord.WORK_ORDER_NUMBER,
+        workCellName: pendingLaborRecord.WORK_CELL_NAME,
+        employee: pendingLaborRecord.EMPLOYEE_NAME,
+        laborActivity: pendingLaborRecord.WORKCENTER_NAME,
+        startTime: "",
+        startDate:"",
+        stopTime:'',
+        stopDate:''
+      })
+    }, [page]);
+    const onChange = (e) => {
+      setLaborRecord({ [e.target.name]: e.target.value });
+    }
+    const onChangeWorkCell = (e) => {
+      if(e !== laborRecord.WORK_CELL_NAME ){
+        workCellData.map(item =>{
+          if(item.WORK_CELL_NAME === e){
+            getPanalShop(item.DEPARTMENT_KEY)
+            setApiFetchData({employeeUpdate:panelShop})
+          }
+        })
+      }
+    }
+    const completeStartNew = () =>{
+      history.push('/')
+    }
+    const onSubmit = (e) => {
+      e.preventDefault();
+      history.push(`/labor-record-complete/${pendingLaborRecord.KEY}`)
+    }
+    const contentHtml = <>
+      {workCellData.length > 0 ? workCellData.map(item=><Option value={item.WORK_CELL_NAME} >{item.WORK_CELL_NAME}</Option>) : null}
+    </>;
+     const contentHtmlForEmployee = <>
+      {panelShop.length > 0 ? panelShop.map(item=>{
+        <>
+          <Select defaultValue={apiFetchData.employeeUpdate.length > 0 ?  item.NAME: pendingLaborRecord.EMPLOYEE_NAME}  name="employee">
+            <Option value={item.NAME} >{item.NAME}</Option>
+          </Select>
+        </>
+      }) : null}
+    </>;
     return (
       <>
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-      <Col className="gutter-row" span={12}>
-        <div>
-        <UiPageHeader content={Constants.WORKCELL_PROGRESS_TIMERS} />
-      <UiGrid title="Work Order" desc="SMS PRESS HIGHT  VOLATAGE">
-        <Input placeholder="" value="180944"  />
-      </UiGrid>
-      <UiGrid title="Customar " number="180944" desc="SMS PRESS HIGHT  VOLATAGE" />
-      <UiGrid title="Plat " number="18" desc="Electrical" />
-      <UiGrid title="Departement " number="180" desc="Panel Shop" />
+      <form onSubmit={onSubmit} className="labor-record-form">
+        <Col className="gutter-row" span={12}>
+          <div>
+            {console.log(apiFetchData)}
+            <UiPageHeader content={Constants.WORKCELL_PROGRESS_TIMERS} />
+            <UiGrid title="Work Order" desc="SMS PRESS HIGHT  VOLATAGE">
+              <Input placeholder="" name="workOrder" value={pendingLaborRecord.WORK_ORDER_NUMBER} onChange={onChange} />
+            </UiGrid>
+            <UiGrid title="Customar " number={pendingLaborRecord.CUST_NAME} desc="SMS PRESS HIGHT  VOLATAGE" />
+            <UiGrid title="Plant " number={pendingLaborRecord.PLANT_KEY} desc="Electrical" />
+            <UiGrid title="Departement " number={pendingLaborRecord.DEPARTMENT_KEY} desc="Panel Shop" />
+            <UiGrid title="Work Cell" >
+              <Input.Group compact>
+                <Select defaultValue={pendingLaborRecord.WORK_CELL_NAME} name="workCellName" onChange={onChangeWorkCell}>
+                  {contentHtml}
+                </Select>
+              </Input.Group>
+            </UiGrid>
+            <UiGrid title="Employee" >
+              <Input.Group compact>
+                {contentHtmlForEmployee}
+              </Input.Group>
+            </UiGrid>
+            <UiGrid title="Labor Activity" >
+              <Input.Group compact>
+              <Select defaultValue={pendingLaborRecord.WORKCENTER_NAME} name="laborActivity">
+                <Option value={pendingLaborRecord.WORKCENTER_NAME} onChange={onChange}>{pendingLaborRecord.WORKCENTER_NAME}</Option>
+              </Select>
+              </Input.Group>
+            </UiGrid>
+            <UiGrid title="Start Time" >
+              <div className="data-set">
+                <div>
+                  <Input.Group compact >
+                    <DatePicker name="startDate"/>
+                  </Input.Group>
+                </div>
+                <div>
+                  <TimePicker name="startTime" defaultValue={moment(pendingLaborRecord.START_TIME, format)} format={format} />
+                </div>
+                <div>
+                  <Radio.Group>
+                    <Radio value="a">AM</Radio>
+                    <Radio value="b">PM</Radio>
+                  </Radio.Group>
+                </div>
+              </div>
+            </UiGrid>
+            <UiGrid title="Stop Time" >
+              <div className="data-set">
+                <div>
+                  <Input.Group compact>
+                    <DatePicker name="stopDate"/>
+                  </Input.Group>
+                </div>
+                <div>
+                  <TimePicker name="stopTime" defaultValue={moment(pendingLaborRecord.STOP_TIME, format)} format={format} />
+                </div>
+                <div>
+                  <Radio.Group>
+                    <Radio value="a">AM</Radio>
+                    <Radio value="b">PM</Radio>
+                  </Radio.Group>
+                </div>
 
-      <UiGrid title="Work Order" >
-        <Input.Group compact>
-        <Select defaultValue="Panel Shop Wiring">
-          <Option value="Panel Shop Wiring">Panel Shop Wiring</Option>
-          <Option value="Option1-2">Option1-2</Option>
-        </Select>
-        </Input.Group>
-      </UiGrid>
-      <UiGrid title="Employee" >
-        <Input.Group compact>
-        <Select defaultValue="227 Jerry">
-          <Option value="227 Jerry">227 Jerry</Option>
-          <Option value="Option1-2">Option1-2</Option>
-        </Select>
-        </Input.Group>
-      </UiGrid>
-      <UiGrid title="Labor Activity" >
-        <Input.Group compact>
-        <Select defaultValue="1811 Wiring ">
-          <Option value="1811 Wiring">1811 Wiring</Option>
-          <Option value="Option1-2">Option1-2</Option>
-        </Select>
-        </Input.Group>
-      </UiGrid>
-      <UiGrid title="Start Time" >
-        <div className="data-set">
-          <div>
-            <Input.Group compact>
-              <DatePicker />
-            </Input.Group>
+              </div>
+            </UiGrid>
+        <UiGrid title="Labor Hours " number={pendingLaborRecord.LABOR_TIME} />
           </div>
-          <div>
-            <TimePicker defaultValue={moment('12:08', format)} format={format} />
+        </Col>
+        <Col className="gutter-row" span={12}>
+          <div >
+            <p>Note *</p>
+            <TextArea rows={4} name="note" onChange={onChange}/>
           </div>
-          <div>
-            <Radio.Group>
-              <Radio value="a">AM</Radio>
-              <Radio value="b">PM</Radio>
-            </Radio.Group>
+          <div className="check-time-button">
+            <input type="submit" className="time-button yellow" value="Complete Tracking" />
+            <Button type="primary" className="time-button" onClick={completeStartNew} >Complete Tracking And Start New Job</Button>  
           </div>
-
-        </div>
-      </UiGrid>
-      <UiGrid title="Stop Time" >
-        <div className="data-set">
-          <div>
-            <Input.Group compact>
-              <DatePicker />
-            </Input.Group>
-          </div>
-          <div>
-            <TimePicker defaultValue={moment('12:08', format)} format={format} />
-          </div>
-          <div>
-            <Radio.Group>
-              <Radio value="a">AM</Radio>
-              <Radio value="b">PM</Radio>
-            </Radio.Group>
-          </div>
-
-        </div>
-      </UiGrid>
-      <UiGrid title="Labor Hours " number="1.5"  />
-        </div>
-      </Col>
-      <Col className="gutter-row" span={12}>
-        <div >
-          <p>Note *</p>
-          <TextArea rows={4} />
-        </div>
-        <div className="check-time-button">
-          <Button type="primary" className="time-button yellow"  >Complete Tracking</Button>  
-          <Button type="primary" className="time-button"  >Complete Tracking And Start New Job</Button>  
-        </div>
-      </Col>
+        </Col>
+        </form>
     </Row>
       </>
     )

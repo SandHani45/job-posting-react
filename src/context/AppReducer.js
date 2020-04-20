@@ -5,12 +5,12 @@ export default (state, {
       case "GET_WORK_CELL":
         return {
           ...state,
-          workCellData: [...state.workCellData, payload]
+          workCellData: payload
         };
         case "GET_PANEL_SHOP":
         return {
           ...state,
-          panelShop: [...state.panelShop, payload]
+          panelShop: payload
         };
         case "GET_KEY_DATA":
         return {
@@ -32,7 +32,26 @@ export default (state, {
             ...state,
             laborConfirm: payload
           };
-        
+        case "GET_PENDING_LABOR":
+        return {
+          ...state,
+          pendingLabor: payload
+        };
+        case "GET_PENDING_LABOR_RECORD":
+          return {
+            ...state,
+            pendingLaborRecord: payload
+          };
+        case "GET_START_TIME":
+          return {
+            ...state,
+            startTime: payload
+          };
+        case "GET_IS_ACTIVE":
+        return {
+          ...state,
+          isActive: payload
+        };
       default:
         return state;
     }

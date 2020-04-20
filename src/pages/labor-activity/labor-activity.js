@@ -32,7 +32,8 @@ import { Row } from 'antd';
         wcenterKey:keyValue.KEY,
         employee:keyValue.CODE
       }
-      getLaborConfirm(serviceParams)  
+      getLaborConfirm(serviceParams);
+      getKeyData('work_center', keyValue)  
       history.push(`/labor-confirm`);
     };
 
