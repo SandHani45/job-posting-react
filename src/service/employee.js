@@ -1,5 +1,5 @@
 import axios from 'axios';
-const endPoint = "http://34.206.72.199:3001/api/pc"
+const endPoint = "http://34.206.72.199:3010/api/pc"
 export const getWorkCellService = () => {
     return axios.get(`${endPoint}/workCells/`).then((res) => res.data);
 };
