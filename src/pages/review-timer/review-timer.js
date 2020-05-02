@@ -21,15 +21,15 @@ import UiGrid from './../../views/UiGrid'
 import UiTimerButton from './../../views/UiTimerButton'
 //Constants
 import Constants from './../../constants'
-//scss
+//scss 
 import './review-timer.scss'
-  
+  // service
+import { putPendingLaborService } from './../../service/pendingLabor'
   const { Option } = Select;
   const format = 'HH:mm';
   const { TextArea } = Input;
-
-
-function ReviewTimer() {
+  const dateFormat = 'YYYY/MM/DD';
+const ReviewTimer = () => {
   const history = useHistory();
   const {pendingLaborRecord,panelShop, workCellData, getWorkCell, getPanalShop } = useContext(GlobalContext);
   const [page, setPage] = useState(1);
@@ -80,14 +80,31 @@ function ReviewTimer() {
     }
     const onSubmit = (e) => {
       e.preventDefault();
-      history.push(`/labor-record-complete/${pendingLaborRecord.KEY}`)
+      let serviceParams = {
+          PLANT_KEY: pendingLaborRecord.PLANT_KEY,
+          DEPARTMENT_KEY: pendingLaborRecord.DEPARTMENT_KEY,
+          EMPLOYEE_KEY: pendingLaborRecord.EMPLOYEE_KEY,
+          WORK_CENTER_KEY: pendingLaborRecord.WORK_CENTER_KEY,
+          WORK_CELL_KEY: pendingLaborRecord.WORK_CELL_KEY,
+          LABOR_CLASS: null,
+          WORK_ORDER_NUMBER: pendingLaborRecord.WORK_ORDER_NUMBER,
+          START_TIME: pendingLaborRecord.START_TIME,
+          STOP_TIME: pendingLaborRecord.STOP_TIME,
+          LABOR_TIME: null,
+          LABOR_RATE_TYPE: null,
+          STATUS: "C"
+      }
+      putPendingLaborService(pendingLaborRecord.KEY, serviceParams).then((res)=>{
+        history.push(`/labor-record-complete/${pendingLaborRecord.KEY}`)
+      })
     }
     const contentHtml = <>
-      {workCellData.length > 0 ? workCellData.map(item=><Option value={item.WORK_CELL_NAME} >{item.WORK_CELL_NAME}</Option>) : null}
+      {workCellData.length > 0 ? workCellData.map((item, index)=><Option key={index} value={item.WORK_CELL_NAME} >{item.WORK_CELL_NAME}</Option>) : null}
     </>;
      const contentHtmlForEmployee = <>
-      {panelShop.length > 0 ? panelShop.map(item=><Option value={item.NAME} >{item.NAME}</Option>) : null}
+      {panelShop.length > 0 ? panelShop.map((item, index)=><Option key={index} value={item.NAME} >{item.NAME}</Option>) : null}
     </>;
+    
     return (
       <>
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
@@ -127,7 +144,7 @@ function ReviewTimer() {
               <div className="data-set">
                 <div>
                   <Input.Group compact >
-                    <DatePicker name="startDate"/>
+                    <DatePicker name="startDate" defaultValue={moment('2015/01/01', dateFormat)} format={dateFormat}/>
                   </Input.Group>
                 </div>
                 <div>

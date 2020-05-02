@@ -15,34 +15,47 @@ import { Button,Row, Col } from 'antd';
 // service
 import { putPendingLaborService } from './../../service/pendingLabor'
 
- const  ProgressTimeStop = (props) => {
-    const {pendingLabor, pendingLaborRecord, getPendingLaborRecord } = useContext(GlobalContext);
+ const ProgressTimeStop = (props) => {
+    const {keyData, pendingLaborRecord, getPendingLaborRecord } = useContext(GlobalContext);
     let { id } = useParams();
     const [page, setPage] = useState(0);
     const history = useHistory();
-    let tempDate = new Date()
-    let months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", 
-    "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-    let tempMonth = months[tempDate.getMonth()]
-    let finalDate = [tempDate.getDate(), tempMonth, tempDate.getFullYear()].join('-')
-    let tempTime = new Date().toLocaleString('en-GB');
-    let splitTime = tempTime.split(',')
-    let time = splitTime[1]
-    let finaleDate = [time].join(' ')
-
     useEffect(() => {
         getPendingLaborRecord(id)
       }, [page]);
 
  
     const stopTimer = () =>{
+        let tempDate = new Date()
+        let months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", 
+        "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+        let tempMonth = months[tempDate.getMonth()]
+        let finalDate = [tempDate.getDate(), tempMonth, tempDate.getFullYear()].join('-')
+        let tempTime = new Date().toLocaleString('en-GB');
+        let splitTime = tempTime.split(',')
+        let time = splitTime[1]
+        let stopTime = [finalDate, time].join(' ')
         let serviceParams = {
-            STOP_TIME: finaleDate,
+            PLANT_KEY: pendingLaborRecord.PLANT_KEY,
+            DEPARTMENT_KEY: pendingLaborRecord.DEPARTMENT_KEY,
+            EMPLOYEE_KEY: pendingLaborRecord.EMPLOYEE_KEY,
+            WORK_CENTER_KEY: pendingLaborRecord.WORK_CENTER_KEY,
+            WORK_CELL_KEY: pendingLaborRecord.WORK_CELL_KEY,
+            LABOR_CLASS: null,
+            WORK_ORDER_NUMBER: pendingLaborRecord.WORK_ORDER_NUMBER,
+            START_TIME: pendingLaborRecord.START_TIME,
+            STOP_TIME: stopTime,
+            LABOR_TIME: null,
+            LABOR_RATE_TYPE: null,
+            STATUS: "I"
         }
+
         putPendingLaborService(id, serviceParams).then((res)=>{
-            console.log(res)
+            if(res){
+                history.push('/review-timer')
+            }
         })
-        history.push('/review-timer')
+        // history.push('/review-timer')
     }
 
     return (

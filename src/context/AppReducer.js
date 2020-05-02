@@ -25,7 +25,7 @@ export default (state, {
         case "GET_WORK_ORDER":
         return {
           ...state,
-          laborActivity: [...state.laborActivity, payload]
+          laborActivity: payload
         };
         case "GET_LABOR_CONFIRM":
           return {
@@ -52,6 +52,16 @@ export default (state, {
           ...state,
           isActive: payload
         };
+        case "GET_LABOR_POSTING_FILTER":
+          return {
+            ...state,
+            laborPostingFilter: payload
+          };
+        case "ERROR":
+          return {
+            ...state,
+            error: payload
+          };
       default:
         return state;
     }

@@ -8,7 +8,9 @@ import ReviewTimer from './../pages/review-timer/review-timer';
 import ProgressTimeStop from './../pages/progress-time-stop/progress-time-stop';
 import LaborRecordComplete from './../pages/labor-record-complete/labor-record-complete'
 import LaborReviewAndPosting from './../pages/labor-review-and-posting/labor-review-and-posting';
-
+import LaborReviewAndPostingEdit from  './../pages/labor-review-and-posting/labor-review-and-posting-edit'
+import LaborReviewAndPostingView from './../pages/labor-review-and-posting/labor-review-and-posting-view'
+import LaborReviewAndPostingAdd from './../pages/labor-review-and-posting/labor-review-and-posting-add'
 export const Routes = [
     {
         component: WorkCell,
@@ -70,4 +72,22 @@ export const Routes = [
         exact: true,
         title: 'LaborReviewAndPosting'
     },
+    {
+        component: LaborReviewAndPostingEdit,
+        path: '/labor-review-and-posting/edit/:id',
+        exact: true,
+        title: 'LaborReviewAndPostingEdit'
+    },
+    {
+        component: LaborReviewAndPostingView,
+        path: '/labor-review-and-posting/:id',
+        exact: true,
+        title: 'LaborReviewAndPosting'
+    },
+    {
+        component: LaborReviewAndPostingAdd,
+        path: '/labor-review-and-posting-add-labor-record',
+        exact: true,
+        title: 'LaborReviewAndPostingAdd'
+    }
 ];

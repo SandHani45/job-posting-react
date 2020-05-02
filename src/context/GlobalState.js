@@ -8,7 +8,7 @@ import {
     getLaborActivityService,
     getLaborConfirmService 
 } from './../service/employee'
-import {getPendingLaborService ,getProgressTimeStop} from './../service/pendingLabor'
+import {getPendingLaborService ,getLaborPostingFilterService} from './../service/pendingLabor'
 const initialState = {
   workCellData:[],
   panelShop:[],
@@ -20,14 +20,16 @@ const initialState = {
   startTime:0,
   endTime:null,
   isActive:false,
-  pendingLaborRecord:{}
+  pendingLaborRecord:{},
+  laborPostingFilter:{},
+  error:{}
 };
 
 export const GlobalContext = createContext(initialState);
 export const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AppReducer, initialState);
 
-  function getWorkCell() {
+  const getWorkCell = () => {
     getWorkCellService().then((res)=>{
         dispatch({
             type: "GET_WORK_CELL",
@@ -36,7 +38,7 @@ export const GlobalProvider = ({ children }) => {
     })
   }
 
-  function getPanalShop(key) {
+  const getPanalShop = (key) => {
     getPanelShopService(key).then((res)=>{
         dispatch({
             type: "GET_PANEL_SHOP",
@@ -45,7 +47,7 @@ export const GlobalProvider = ({ children }) => {
     })
   }
 
-  function getWorkOrder(id) {
+  const getWorkOrder = (id) => {
     let key = state.keyData[0].DEPARTMENT_KEY
     getWorkOrderService(id).then((res)=>{
         if(res[0].STATUS_MESSAGE === null){
@@ -56,12 +58,15 @@ export const GlobalProvider = ({ children }) => {
                 });
             })
         }else{
-
+          dispatch({
+            type: "ERROR",
+            payload: res
+        });
        }
     })
   }
 
-  function getLaborConfirm(serviceParams) {
+  const getLaborConfirm = (serviceParams) => {
     getLaborConfirmService(serviceParams).then((res)=>{
         dispatch({
           type: "GET_LABOR_CONFIRM",
@@ -70,7 +75,7 @@ export const GlobalProvider = ({ children }) => {
     })
   }
 
-  function getProgressTimeStop(key) {
+  const getProgressTimeStop = (key) => {
     getProgressTimeStop(key).then((res)=>{
         dispatch({
           type: "GET_PROGRESS_TIME_STOP",
@@ -79,7 +84,7 @@ export const GlobalProvider = ({ children }) => {
     })
   }
   
-  function getKeyData(keyName, keyValue) {
+  const getKeyData = (keyName, keyValue) => {
     if(keyName === 'workcell'){
       keyEmpty()
       dispatch({
@@ -113,14 +118,14 @@ export const GlobalProvider = ({ children }) => {
     }
   }
 
-  function keyEmpty() {
+  const keyEmpty = () =>{
     dispatch({
         type: "GET_KEY_DATA_EMPTY",
         payload: []
     });
   }
   
-  function getPendingLabor() {
+  const getPendingLabor = () => {
     getPendingLaborService().then((res)=>{
       dispatch({
         type: "GET_PENDING_LABOR",
@@ -129,33 +134,43 @@ export const GlobalProvider = ({ children }) => {
     })
   }
 
-  function startTimer(count) {
+  const startTimer = (count) => {
     dispatch({
       type: "GET_START_TIME",
       payload: count
     });
   }
 
-  function isActiveFun(value) {
+  const isActiveFun = (value) => {
     dispatch({
       type: "GET_IS_ACTIVE",
       payload: value
     });
   }
 // laborPending
-function getPendingLaborRecord(id){
-  getPendingLaborService(id).then((res)=>{
-    let pendingLaborKeyData = _.find(res, function(o) { 
-      if(o.KEY == id){
-          return o
-      }
-    });
-    dispatch({
-      type: "GET_PENDING_LABOR_RECORD",
-      payload: pendingLaborKeyData
-    });
-})
-}
+  const getPendingLaborRecord = (id) => {
+    getPendingLaborService(id).then((res)=>{
+      let pendingLaborKeyData = _.find(res, function(o) { 
+        if(o.KEY == id){
+            return o
+        }
+      });
+      dispatch({
+        type: "GET_PENDING_LABOR_RECORD",
+        payload: pendingLaborKeyData
+      });
+    })
+  }
+// labor review posting 
+  const getLaborPostingFilter = (wOrder) => {
+    getLaborPostingFilterService(wOrder).then((res)=>{
+      dispatch({
+        type: "GET_LABOR_POSTING_FILTER",
+        payload: res
+      });
+    })
+  }
+
   return (
     <GlobalContext.Provider
       value={{
@@ -169,6 +184,8 @@ function getPendingLaborRecord(id){
         endTime:state.endTime,
         isActive:state.isActive,
         pendingLaborRecord:state.pendingLaborRecord,
+        laborPostingFilter:state.laborPostingFilter,
+        error:state.error,
         getWorkCell,
         getPendingLabor,
         getPanalShop,
@@ -178,7 +195,8 @@ function getPendingLaborRecord(id){
         keyEmpty,
         startTimer,
         isActiveFun,
-        getPendingLaborRecord
+        getPendingLaborRecord,
+        getLaborPostingFilter
       }}
     >
       {children}

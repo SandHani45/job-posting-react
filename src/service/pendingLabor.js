@@ -1,4 +1,5 @@
 import axios from 'axios';
+import _ from 'lodash'
 const endPoint = "http://34.206.72.199:3010/api/pc"
 // Pending Labor
 //get
@@ -20,6 +21,25 @@ export const putPendingLaborService = (key, body) => {
 }
 
 // Delete
-export const deletePendingLaborService = (key, body) => {
-    return axios.delete(`${endPoint}/pendingLabor/${key}`, body).then((res) => res.data);
+export const deletePendingLaborService = (key) => {
+    return axios.delete(`${endPoint}/pendingLabor/${key}`).then((res) => res.data);
+}
+
+// getLaborPostingFilter
+export const getLaborPostingFilterService = (wOrder) => {
+    let filterData = {
+        wOrder:wOrder
+    }
+    return axios.get(`${endPoint}/pendingLabor/${' '}/${' '}/${filterData.wOrder}`).then((res) => {
+        return _.filter(res.data, function(item) { 
+            if(item.STATUS === "I"){
+                return item
+            }
+         });
+    });
+}
+
+// listLaborAuditTrail
+export const getListLaborAuditTrail = (id) => {
+    return axios.get(`${endPoint}/listLaborAuditTrail/${id}`).then((res) => res.data);
 }

@@ -15,7 +15,7 @@ import { Button,Row, Col } from 'antd';
 // service
 import { putPendingLaborService } from './../../service/pendingLabor'
 
- const  LaborRecordComplete = (props) => {
+ const LaborRecordComplete = (props) => {
     const {pendingLabor, pendingLaborRecord, getPendingLaborRecord } = useContext(GlobalContext);
     let { id } = useParams();
     const [page, setPage] = useState(0);

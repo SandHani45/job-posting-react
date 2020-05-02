@@ -9,15 +9,16 @@ import Constants from './../../constants'
 import './job-posting.scss'
 import { Input, Button  } from 'antd';
 
-
- function JobPosting(props) {
+const JobPosting = (props) => {
     let { id } = useParams();
     const [page, setPage] = useState(1);
     const [jobNumber, setJobNumber] = useState();
     const { keyData, getWorkOrder, getKeyData} = useContext(GlobalContext);
     const history = useHistory();
     useEffect(() => {
-        console.log('2',keyData)
+        if(keyData.length  === 0){
+            history.push(`/work-cell`)
+          }
       }, [page]);
 
     function onChangeHandler(event) {

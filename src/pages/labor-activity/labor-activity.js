@@ -1,5 +1,5 @@
 
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 //components
 import UiCard from './../../views/UiCard'
 import UiPageHeader from './../../views/UiPageHeader'
@@ -12,12 +12,17 @@ import {useHistory} from 'react-router-dom';
 import { Row } from 'antd';
 
 
- function LaborActivity(props) {
+ const LaborActivity = (props) => {
     const { keyData, laborActivity, getKeyData, getLaborConfirm} = useContext(GlobalContext);
     const history = useHistory();
+    useEffect(() => {
+      if(keyData.length  === 0){
+          history.push(`/work-cell`)
+        }
+    }, [1]);
 
     const laborActivityClick = (code) => {
-      let data = laborActivity[0]
+      let data = laborActivity
       let keyValue;
       data.map(item=>{
           if(item.CODE === code){
@@ -40,10 +45,16 @@ import { Row } from 'antd';
     return (
         <>
         <UiPageHeader content={Constants.WORKCELL} />
+        {console.log(laborActivity)}
           <Row gutter={16}>
-            {laborActivity.length >= 1 ? laborActivity[0].map((item, index)=>{
-              return <UiCard key={index }  text={`#${item.CODE}`} name={item.DESCRIPTION} onClickHandler={() => laborActivityClick(item.CODE)}/>
-            }):  null}
+            {laborActivity.length > 0 ? laborActivity.map((item, index)=>{
+              return <UiCard 
+                        key={index }  
+                        text={`#${item.CODE}`} 
+                        name={item.DESCRIPTION} 
+                        onClickHandler={() => laborActivityClick(item.CODE)}
+                      />
+            }): 'No Data'}
           </Row>
         </>
     )

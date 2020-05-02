@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 //components
 import UiCard from './../../views/UiCard'
 import UiPageHeader from './../../views/UiPageHeader'
+import Spinner from './../../views/Spinner'
 //Constants
 import Constants from './../../constants'
 // Router
@@ -9,11 +10,11 @@ import {useHistory} from 'react-router-dom';
 //antd
 import { Row } from 'antd';
 // context
-import { GlobalContext } from "./../../context//GlobalState";
+import { GlobalContext } from "./../../context/GlobalState";
 
-function WorkCell() {
+const WorkCell = () => {
   const [page, setPage] = useState(1);
-  const { getWorkCell, workCellData , getKeyData, keyData, getPanalShop ,keyEmpty} = useContext(GlobalContext);
+  const { getWorkCell, workCellData , getKeyData, getPanalShop} = useContext(GlobalContext);
   const history = useHistory();
     useEffect(() => {
       getWorkCell()
@@ -38,7 +39,7 @@ function WorkCell() {
       <Row gutter={16}>
         {workCellData.length >= 1 ? workCellData.map((item, index)=>{
           return <UiCard key={item.KEY } text={item.DEPARTMENT_NAME} name={item.WORK_CELL_NAME} onClickHandler={() => panelShopClick(item.DEPARTMENT_KEY)}/>
-        }) : null}
+        }) : <Spinner />}
       </Row>
     </>
   ); 

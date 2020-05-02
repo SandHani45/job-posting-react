@@ -11,12 +11,14 @@ import {useHistory} from 'react-router-dom';
 // context
 import { GlobalContext } from "./../../context//GlobalState";
 
- function PanelShop(props) {
+const PanelShop = (props) => {
     const { panelShop , getKeyData ,keyData} = useContext(GlobalContext);
     let { id } = useParams();
     const history = useHistory();
     useEffect(() => {
-      console.log('1',keyData)
+      if(keyData.length  === 0){
+        history.push(`/work-cell`)
+      }
     }, [1]);
 
     function jobPosting (key) {

@@ -1,0 +1,68 @@
+.labor-review-filter{
+    margin-bottom: 50px;
+    margin-top: 50px;
+    .__work-order{
+        display: flex;
+        .ant-select-selector{
+            width: 181px;
+        }
+        .__mr-2{
+            margin-right: 56px;
+        }
+        .__mr-1{
+            margin-right: 22px;
+        }
+    }
+}
+
+.data-set{
+    display: flex;
+    width: 500px;
+}
+.ui-grid {
+    display: flex;
+    width: 100%;
+}
+.check-time-button{
+    display: flex
+}
+.time-button{
+    padding: 18px;
+    height: fit-content;
+    margin-left: 10px;
+}
+.check-time-button{
+    margin-top: 250px;
+}
+.yellow{
+    background-color: #faad14;
+    color: #fff;
+    background-color: #faad14;
+    border-color: #faad14;
+}
+.yellow:hover, .yellow:focus {
+    color: #fff;
+    background-color: #faad14;
+    border-color: #faad14;
+}
+.time-button{
+    border: 0;
+    cursor: pointer;
+}
+.labor-record-form{
+    width: 100%;
+    display: flex;
+}
+.footer-button{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+// .back-button{
+//     display: none;
+// }
+.footer-cancle{
+    display: flex;
+    flex-flow: row-reverse;
+}

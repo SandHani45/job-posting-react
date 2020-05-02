@@ -1,13 +1,19 @@
 import React from 'react'
 import { Layout } from 'antd';
+import MainHamber from './../MainHamber'
 const { Header } = Layout;
 
-function UiHeader() {
+const UiHeader = (props) => {
   return (
     <React.Fragment>
       <Header>
         <div className="logo">
-          <h3 className="logo-white">Logo</h3>
+          {
+            props.for === 'supervisor' 
+              ? <div className="supervisor"><MainHamber />  <h3 className="logo-white">Logo</h3></div>
+              : <h3 className="logo-white">Logo</h3>
+          }
+          
         </div>
       </Header>
     </React.Fragment>

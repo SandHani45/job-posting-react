@@ -9,7 +9,13 @@ const CONSTANTS = {
     WORKCELLS:'Work Cell',
     EMPLOYEE:'Employee',
     LOBARACTIVITY: 'Labor Activity',
-    WORKCELL_PROGRESS_TIMERS: 'Work Cell Panal Shop In Progress Timers '
+    WORKCELL_PROGRESS_TIMERS: 'Work Cell Panal Shop In Progress Timers ',
+    LABOR_RATE:[
+      "Standard Rate",
+      "Standard Rate 2",
+      "Standard Rate 3",
+      "Standard Rate 4"
+    ]
   };
   
   export default CONSTANTS;

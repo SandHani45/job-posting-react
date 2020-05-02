@@ -4,11 +4,12 @@ import './App.scss';
 import UiHeader from './views/UiHeader'
 import TopNavBar  from './views/TopNavBar';
 import Timer from './views/Timer'
+import Spinner from './views/Spinner'
 // Routers
 import { Routes, Router } from './routes';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 // context
-import { GlobalContext } from "./context//GlobalState";
+import { GlobalContext } from "./context/GlobalState";
 import { GlobalProvider } from './context/GlobalState';
 
 // Antd
@@ -28,16 +29,27 @@ const App = () => {
       }
     return (
         <GlobalProvider>
-          <Suspense fallback='Loading'> {/* Show a loader component here as a fallback*/}
-              <UiHeader />
-              <TopNavBar />
-              <Timer />
+          <Suspense fallback={<Spinner />}> {/* Show a loader component here as a fallback*/}
+          
+          {location.pathname.includes('labor-review-and-posting') 
+            ? <UiHeader for="supervisor" /> 
+            :<><UiHeader /><TopNavBar /></>
+          }
+              {/* <UiHeader />
+              <TopNavBar /> */}
+              {/* <Timer /> */}
               <Layout className="layout">
                 <Content style={{ padding: '0 50px' }} > 
                     <Router routes={Routes} defaultRoute={Routes[0].path} />
-                    {location.pathname !== '/work-cell' ? <Button type="primary" className="back-button" onClick={goBack} icon={<ArrowLeftOutlined  />}>Back</Button> : null }
                 </Content>
               </Layout>
+              {location.pathname !== '/work-cell' ?
+              <Layout className="layout">
+                <Content style={{ padding: '0 50px' }} > 
+                  <Button type="primary" className="back-button" onClick={goBack} icon={<ArrowLeftOutlined  />}>Back</Button>
+                </Content>
+              </Layout>
+              : null}
           </Suspense>
         </GlobalProvider>
     );

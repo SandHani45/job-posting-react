@@ -15,12 +15,15 @@ import './labor-confirm.scss'
 // service
 import { postPendingLaborService } from './../../service/pendingLabor'
 
- function LaborActivity(props) {
+ const LaborActivity = (props) => {
     const { keyData , getPendingLabor,startTime,laborActivity,startTimer, laborConfirm} = useContext(GlobalContext);
     const [seconds, setSeconds] = useState(0);
     const [isActive, setIsActive] = useState(false);
     const history = useHistory();
     useEffect(() => {
+        if(keyData.length  === 0){
+            history.push(`/work-cell`)
+          }
         let interval = null;
         if (isActive) {
           interval = setInterval(() => {
@@ -33,7 +36,7 @@ import { postPendingLaborService } from './../../service/pendingLabor'
         return () => clearInterval(interval);
       }, [isActive, seconds]);
      
-    const startHandler = () =>{
+    const startHandler = () => {
         // Date and Time Conveter script
         setIsActive(!isActive)
         let tempDate = new Date()
@@ -44,7 +47,7 @@ import { postPendingLaborService } from './../../service/pendingLabor'
         let tempTime = new Date().toLocaleString('en-GB');
         let splitTime = tempTime.split(',')
         let time = splitTime[1]
-        let finaleDate = [finalDate, time].join(' ')
+        let finaleDateTime = [finalDate,time].join(' ')
         let serviceParams = {
             PLANT_KEY: keyData[0].PLANT_KEY,
             DEPARTMENT_KEY: keyData[0].DEPARTMENT_KEY,
@@ -53,17 +56,15 @@ import { postPendingLaborService } from './../../service/pendingLabor'
             WORK_CELL_KEY: keyData[0].KEY,
             LABOR_CLASS: null,
             WORK_ORDER_NUMBER: parseInt(keyData[2].workOrderPosting),
-            START_TIME: finaleDate,
+            START_TIME: finaleDateTime,
             STOP_TIME: null,
             LABOR_TIME: null,
             LABOR_RATE_TYPE: null,
             STATUS: "I"
         }
-        
-        postPendingLaborService(serviceParams).then((res)=>{
-            console.log('-------------', res)
+        postPendingLaborService(serviceParams).then(res=>{
+            history.push('/progress-timers')
         })
-        history.push('/progress-timers')
     }
     return (
         <>
