@@ -49,7 +49,6 @@ import { putPendingLaborService } from './../../service/pendingLabor'
             LABOR_RATE_TYPE: null,
             STATUS: "I"
         }
-
         putPendingLaborService(id, serviceParams).then((res)=>{
             if(res){
                 history.push('/review-timer')

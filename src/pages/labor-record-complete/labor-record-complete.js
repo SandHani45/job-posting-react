@@ -11,7 +11,8 @@ import Constants from './../../constants'
 import _ from 'lodash'
 import {useHistory,useParams} from 'react-router-dom';
 import { Button,Row, Col } from 'antd';
-
+//scss
+import './labor-record-complete.scss'
 // service
 import { putPendingLaborService } from './../../service/pendingLabor'
 
@@ -40,7 +41,7 @@ import { putPendingLaborService } from './../../service/pendingLabor'
         <>
             { pendingLaborRecord !== undefined ?
                 <> 
-                    <UiPageHeader content={Constants.LABORCONFIRM} />
+                    <UiPageHeader content={Constants.LABORCONFIRM} track />
                     <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
                         <Col className="gutter-row" span={12}>
                             <div>
@@ -54,7 +55,7 @@ import { putPendingLaborService } from './../../service/pendingLabor'
                             </div>
                         </Col>
                         <Col className="gutter-row" span={12}>
-                            <div>
+                            <div className="big-timer">
                                 <UiTimerButton 
                                     name="Complete" 
                                     time='1:10' 

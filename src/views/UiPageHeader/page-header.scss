@@ -1,0 +1,14 @@
+.page-header-flex{
+    display: flex;
+    justify-content: space-between;
+
+}
+.plus-icons{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 255px;
+    span{
+        font-size: 25px;
+    }
+}
