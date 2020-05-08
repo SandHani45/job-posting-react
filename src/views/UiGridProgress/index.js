@@ -5,7 +5,7 @@ import UiTimerButton from './../UiTimerButton'
 import { Row,Col } from 'antd';
 import './ui-grid-progress.scss'
 function UiGridProgress(props) {
-    const { employe,wOrder,lactivity,start_time,start_time_count, employeName,wcName,woDes, timerHandler} = props;
+    const { employe,wOrder,activity,start_time,start_time_count, employeName,wcName,woDes, timerHandler} = props;
     const style = {  padding: '8px 0' };
     const styles = {
         bold:{
@@ -33,7 +33,7 @@ function UiGridProgress(props) {
                     <div style={styles.bold} className="ui-grid-progress__grid">
                         <p>{employe}</p>
                         <p>{wOrder}</p>
-                        <p>{lactivity}</p>
+                        <p>{activity}</p>
                     </div>
                 </Col>
                 <Col className="gutter-row" span={8}>
@@ -49,7 +49,7 @@ function UiGridProgress(props) {
                         <p style={styles.bold}>{start_time}</p>
                     </div>
                 </Col>
-                <Col className="gutter-row" span={6}>
+                <Col className="gutter-row end" span={6}>
                     <div style={style} className="ui-grid-progress__grid">
                         <UiTimerButton name="Elasped" time={start_time_count} hours='HoursMinutes' color="green" timerHandler={timerHandler}/>
                     </div>

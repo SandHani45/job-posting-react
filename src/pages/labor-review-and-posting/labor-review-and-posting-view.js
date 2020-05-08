@@ -76,7 +76,7 @@ const LaborReviewAndPostingView = () => {
     }
     return (
         <div>
-            {data.length > 0 ?<Table columns={columns} dataSource={data} /> : <Spinner /> }
+            {data.length > 0 ?<Table columns={columns} dataSource={data} /> : "NO DATA" }
             <div className="footer-cancle">
                 <Button 
                     type="primary" 

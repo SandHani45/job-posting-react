@@ -22,7 +22,8 @@ const initialState = {
   isActive:false,
   pendingLaborRecord:{},
   laborPostingFilter:{},
-  error:{}
+  error:{},
+  breadcurmbList:[]
 };
 
 export const GlobalContext = createContext(initialState);
@@ -170,6 +171,16 @@ export const GlobalProvider = ({ children }) => {
       });
     })
   }
+  const getBreadcurmbList = (path,name) =>{
+    const res = {
+      path:path,
+      name:name
+    }
+    dispatch({
+      type: "GET_BREADCURMB",
+      payload: res
+    });
+  }
 
   return (
     <GlobalContext.Provider
@@ -186,6 +197,7 @@ export const GlobalProvider = ({ children }) => {
         pendingLaborRecord:state.pendingLaborRecord,
         laborPostingFilter:state.laborPostingFilter,
         error:state.error,
+        breadcurmbList:state.breadcurmbList,
         getWorkCell,
         getPendingLabor,
         getPanalShop,
@@ -196,7 +208,8 @@ export const GlobalProvider = ({ children }) => {
         startTimer,
         isActiveFun,
         getPendingLaborRecord,
-        getLaborPostingFilter
+        getLaborPostingFilter,
+        getBreadcurmbList
       }}
     >
       {children}

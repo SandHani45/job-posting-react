@@ -1,17 +1,42 @@
 
-import React from 'react'
+import React, {useState,useEffect,useContext} from 'react'
+import moment from 'moment'
 import './ui-timer-buuton.scss'
 // context
-function UiTimerButton(props) {
+import { GlobalContext } from "./../../context/GlobalState";
 
-    const { timerHandler,name,time,hours, color, border,txtColor, width, height} = props
+function UiTimerButton(props) {
+    const { timerHandler,name,time,hours, color, border,txtColor, width, height} = props;
+    const [start, setStart] = useState(0);
+    const [isActive, setIsActive] = useState(true);
+    const [startTimer , setStartTimer] = useState(time)
+    useEffect(() => {
+        let interval = null;
+        if (isActive) {
+        interval = setInterval(() => {
+            setStart(start => start + 1);
+            if(startTimer !== 'null'){
+                var timer = time !== undefined ? time.split(' '):"0 0"
+                var endTime = moment().format('h:mm:ss')
+                console.log(moment(moment(timer[1],"hh:mm:ss").diff(moment(endTime,"hh:mm:ss"))).format("hh:mm:ss"))
+                var finalTimeSub = moment(moment(endTime,"hh:mm:ss").diff(moment(timer[1],"hh:mm:ss"))).format("hh:mm:ss")
+                setStart(start => start + 1);
+                setStartTimer(finalTimeSub)
+            }
+        }, 1000);
+        } else if (!isActive && start !== 0) {
+        clearInterval(interval);
+        }
+        return () => clearInterval(interval);
+    }, [isActive,start]);
+
     return (
     <React.Fragment>
        <div className="ui-timer-button" 
             style={{background:color, border:`1px solid ${border}`,color:txtColor,width:width,height:height}} 
             onClick={timerHandler}>
             <p>{name}</p>
-            <p>{time}</p>
+            <p>{startTimer !== 'null' ? startTimer : 'and' }</p>
             <p>{hours}</p>
        </div>
     </React.Fragment>

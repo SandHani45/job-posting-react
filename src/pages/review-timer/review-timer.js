@@ -26,7 +26,8 @@ import _ from 'lodash'
 import './review-timer.scss'
   // service
 import { getProgressTimeStopService, putPendingLaborService } from './../../service/pendingLabor'
-import { getPanelShopService,getWorkOrderService, getLaborActivityService } from './../../service/employee'
+import { getPanelShopService,getWorkOrderService, getLaborActivityService } from './../../service/employee';
+import { convertMonthToNumber, convertDateTime } from './../../utile/helpers' 
 
 const { Option } = Select;
 const format = 'HH:mm';
@@ -35,7 +36,7 @@ const dateFormat = 'DD-MM-YYYY';
 
 const ReviewTimer = () => {
   const history = useHistory();
-  const {pendingLaborRecord,panelShop, workCellData, getWorkCell, getPanalShop, getPendingLaborRecord } = useContext(GlobalContext);
+  const {pendingLaborRecord, workCellData, getWorkCell } = useContext(GlobalContext);
   const [page, setPage] = useState([]);
   const [note, setNote] = useState('');
   const [workOrderNumber, setWorkOrderNumber] = useState('');
@@ -49,26 +50,7 @@ const ReviewTimer = () => {
   const [laborRate, setRaborRate] = useState(Constants.LABOR_RATE[0]);
   const [employeeUpdate, setEmployeeUpdate] = useState([]);
   const [workCellUpdate, setWorkCellUpdate] = useState(null)
-  function convertMonthToNumber(month){
-    let daySplit = month.split("-")
-    let months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", 
-      "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-    let number = _.findIndex(months, function(o) { return o == daySplit[1] });
-    if(number < 10){
-      return `${daySplit[0]}-0${number}-${daySplit[2]}`
-    }else{
-      return `${daySplit[0]}-${number}-${daySplit[2]}`
-    }
-    
-  }
-  function convertDateTime(date, time){
-    let months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", 
-    "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-    let dateSplit = date.split('-');
-    let monthName = months[parseInt(dateSplit[1], 10)]
-    let finalNameDate =  `${dateSplit[0]}-${monthName}-${dateSplit[1]}`
-    return [finalNameDate,time].join(' ')
-  }
+
     useEffect(() => {
        getWorkCell()
        getProgressTimeStopService(pendingLaborRecord.KEY).then(res=>{
@@ -189,9 +171,9 @@ const ReviewTimer = () => {
       <>
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
       <form  onSubmit={onSubmit} className="labor-record-form">
-        <Col className="gutter-row" span={20}>
+        <Col className="gutter-row" span={12}>
           <div>
-            <UiPageHeader content={Constants.WORKCELL_PROGRESS_TIMERS} />
+            <UiPageHeader content={Constants.REVIEW_TIMER} color="green"/>
             <UiGrid title="Work Order">
               <Input placeholder="" name="workOrder" value={workOrderNumber} onChange={onChangeWorkOrder} />
             </UiGrid>
@@ -237,7 +219,7 @@ const ReviewTimer = () => {
                   </Input.Group>
                 </div>
                 <div>
-                  <TimePicker use12Hours format="h:mm:ss A" onChange={onChangeStartTime} value={moment(startTime, format)} />
+                  <TimePicker use12Hours format="h:mm:ss" onChange={onChangeStartTime} value={moment(startTime, format)} />
                 </div>
               </div>
             </UiGrid>
@@ -249,22 +231,24 @@ const ReviewTimer = () => {
                   </Input.Group>
                 </div>
                 <div>
-                  <TimePicker use12Hours format="h:mm:ss A" onChange={onChangeStopTime} value={moment(stopTime, format)} />
+                  <TimePicker use12Hours format="h:mm:ss" onChange={onChangeStopTime} value={moment(stopTime, format)} />
                 </div>
               </div>
             </UiGrid>
             <UiGrid title="Labor Hours" number={pendingLaborRecord.LABOR_TIME} />
+          </div>
+        </Col>
+        <Col className="gutter-row" span={12}>
             <div>
-                <p>Note *</p>
-                <TextArea rows={4} name='note' value={note} onChange={onChange} placeholder="Note"/>
+              <p>Note *</p>
+              <TextArea rows={4} name='note' value={note} onChange={onChange} placeholder="Note"/>
             </div>
             <div className="check-time-button">
               <input type="submit" className="time-button yellow" value="Complete Tracking" />
               <Button type="primary" className="time-button" onClick={completeStartNew} >Complete Tracking And Start New Job</Button>  
             </div>
-          </div>
         </Col>
-        </form>
+      </form>
     </Row> 
       </>
     )

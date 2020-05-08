@@ -14,13 +14,13 @@ import { GlobalContext } from "./../../context/GlobalState";
 
 const WorkCell = () => {
   const [page, setPage] = useState(1);
-  const { getWorkCell, workCellData , getKeyData, getPanalShop} = useContext(GlobalContext);
+  const { getWorkCell, workCellData , getKeyData, getPanalShop, getBreadcurmbList} = useContext(GlobalContext);
   const history = useHistory();
     useEffect(() => {
       getWorkCell()
     }, [page]);
 
-  const panelShopClick = (key) => {
+  const panelShopClick = (key, name) => {
     let data = workCellData
     let keyValue;
     data.map(item=>{
@@ -30,6 +30,7 @@ const WorkCell = () => {
     })
     getPanalShop(key)
     getKeyData('workcell', keyValue)
+    getBreadcurmbList('/workcell',name)
     history.push(`/panel-shop/${key}`);
   };
 
@@ -38,7 +39,7 @@ const WorkCell = () => {
       <UiPageHeader content={Constants.WORKCELL} />
       <Row gutter={16}>
         {workCellData.length >= 1 ? workCellData.map((item, index)=>{
-          return <UiCard key={item.KEY } text={item.DEPARTMENT_NAME} name={item.WORK_CELL_NAME} onClickHandler={() => panelShopClick(item.DEPARTMENT_KEY)}/>
+          return <UiCard key={item.KEY } text={item.DEPARTMENT_NAME} name={item.WORK_CELL_NAME} onClickHandler={() => panelShopClick(item.DEPARTMENT_KEY, item.WORK_CELL_NAME)}/>
         }) : <Spinner />}
       </Row>
     </>

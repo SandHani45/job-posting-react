@@ -11,8 +11,8 @@ import {useHistory} from 'react-router-dom';
 // context
 import { GlobalContext } from "./../../context//GlobalState";
 
-const PanelShop = (props) => {
-    const { panelShop , getKeyData ,keyData} = useContext(GlobalContext);
+const PanelShop = () => {
+    const { panelShop , getBreadcurmbList, getKeyData ,keyData} = useContext(GlobalContext);
     let { id } = useParams();
     const history = useHistory();
     useEffect(() => {
@@ -21,7 +21,7 @@ const PanelShop = (props) => {
       }
     }, [1]);
 
-    function jobPosting (key) {
+    function jobPosting (key, name) {
       let data = panelShop
       let keyValue;
       data.map(item=>{
@@ -30,15 +30,16 @@ const PanelShop = (props) => {
           }
       })
       getKeyData('panel_shop',keyValue)
+      getBreadcurmbList(`/panel-shop/${id}`,name)
       history.push(`/job-posting-employee/${key}`);
     };
   
     return (
         <>
-        <UiPageHeader content={Constants.WORKCELL} />
+        <UiPageHeader content={Constants.PANALSHOP} />
           <Row gutter={16}>
             {panelShop.length >= 1 ? panelShop.map((item, index)=>{
-              return <UiCard key={index } text={`#${item.EMPLOYEE}`} name={item.NAME} onClickHandler={() => jobPosting(item.EMPLOYEE)}/>
+              return <UiCard key={index } text={`#${item.EMPLOYEE}`} name={item.NAME} onClickHandler={() => jobPosting(item.EMPLOYEE, item.NAME)}/>
             }):  null}
           </Row>
         </>

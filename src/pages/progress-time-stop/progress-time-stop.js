@@ -16,9 +16,9 @@ import { Button,Row, Col } from 'antd';
 import { putPendingLaborService } from './../../service/pendingLabor'
 
  const ProgressTimeStop = (props) => {
-    const {keyData, pendingLaborRecord, getPendingLaborRecord } = useContext(GlobalContext);
+    const { pendingLaborRecord, getPendingLaborRecord } = useContext(GlobalContext);
     let { id } = useParams();
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     const history = useHistory();
     useEffect(() => {
         getPendingLaborRecord(id)
@@ -54,17 +54,17 @@ import { putPendingLaborService } from './../../service/pendingLabor'
                 history.push('/review-timer')
             }
         })
-        // history.push('/review-timer')
     }
 
     return (
         <>
             { pendingLaborRecord !== undefined ?
                 <> 
-                    <UiPageHeader content={Constants.LABORCONFIRM} />
+                    <UiPageHeader content={Constants.PROGRESS_TIME} />
                     <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
                         <Col className="gutter-row" span={24}>
                         <div>
+                            {console.log(pendingLaborRecord.START_TIME)}
                             <UiGrid title={Constants.WORKORDER} number={pendingLaborRecord.WORK_ORDER_NUMBER} desc={pendingLaborRecord.WO_DESCRIPTION} />
                             <UiGrid title={Constants.CUSTOMER} number={pendingLaborRecord.CUST_NAME} />
                             <UiGrid title={Constants.PLANT} number={pendingLaborRecord.INVENTORY_NUMBER} desc={pendingLaborRecord.INVENTORY_NAME} />
@@ -76,12 +76,12 @@ import { putPendingLaborService } from './../../service/pendingLabor'
                         </Col>
                         <Col className="gutter-row" offset={8} span={5}>
                             <div>
-                            <UiTimerButton name="Elasped" time='100' hours='HoursMinutes' color="green" />
+                            <UiTimerButton name="Elasped" time={pendingLaborRecord.START_TIME} hours='HoursMinutes' color="green" />
                             </div>
                         </Col>
                         <Col className="gutter-row" span={5}>
                             <div>
-                                <UiTimerButton name="Stop Timer" time='and' hours='Review Labor' color="red" timerHandler={stopTimer}/>
+                                <UiTimerButton name="Stop Timer" time='null' hours='Review Labor' color="red" timerHandler={stopTimer}/>
                             </div>
                         </Col>
                     </Row>

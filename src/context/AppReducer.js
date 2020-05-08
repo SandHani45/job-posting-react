@@ -52,10 +52,10 @@ export default (state, {
           ...state,
           isActive: payload
         };
-        case "GET_LABOR_POSTING_FILTER":
+        case "GET_BREADCURMB":
           return {
             ...state,
-            laborPostingFilter: payload
+            breadcurmbList: [...state.breadcurmbList, payload]
           };
         case "ERROR":
           return {

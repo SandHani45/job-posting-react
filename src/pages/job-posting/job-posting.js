@@ -13,7 +13,7 @@ const JobPosting = (props) => {
     let { id } = useParams();
     const [page, setPage] = useState(1);
     const [jobNumber, setJobNumber] = useState();
-    const { keyData, getWorkOrder, getKeyData} = useContext(GlobalContext);
+    const { keyData, getWorkOrder, getKeyData, getBreadcurmbList} = useContext(GlobalContext);
     const history = useHistory();
     useEffect(() => {
         if(keyData.length  === 0){
@@ -31,6 +31,7 @@ const JobPosting = (props) => {
         }
         getWorkOrder(jobNumber)
         getKeyData('post_labor', workOrderPosting)
+        getBreadcurmbList(`/job-posting-employee/${id}`,`WO ${jobNumber}`)
         history.push(`/labor-activity/${jobNumber}`);
     }
     return (

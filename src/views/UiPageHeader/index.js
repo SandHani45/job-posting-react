@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import './page-header.scss'
 import { PlusCircleOutlined } from '@ant-design/icons';
 export default function UiPageHeader(props) {
-    const {content, track} = props
+    const {content, track, color} = props
     return (
       <div className="page-header-flex">
         <div className="main-title">
-          <h3>{content}</h3>
+          <h3 style={{color:color}}>{content}</h3>
         </div>
         {track 
           ?<div className="plus-icons">

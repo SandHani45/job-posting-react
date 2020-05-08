@@ -11,6 +11,7 @@ import LaborReviewAndPosting from './../pages/labor-review-and-posting/labor-rev
 import LaborReviewAndPostingEdit from  './../pages/labor-review-and-posting/labor-review-and-posting-edit'
 import LaborReviewAndPostingView from './../pages/labor-review-and-posting/labor-review-and-posting-view'
 import LaborReviewAndPostingAdd from './../pages/labor-review-and-posting/labor-review-and-posting-add'
+import LaborTracker from './../pages/labor-tracker/labor-tracker'
 export const Routes = [
     {
         component: WorkCell,
@@ -21,6 +22,7 @@ export const Routes = [
     {
         component: PanelShop,
         path: '/panel-shop/:id',
+        isBreadcrumbVisible: true,
         exact: true,
         title: 'PanelShop'
     },
@@ -89,5 +91,11 @@ export const Routes = [
         path: '/labor-review-and-posting-add-labor-record',
         exact: true,
         title: 'LaborReviewAndPostingAdd'
+    },
+    {
+        component: LaborTracker,
+        path: '/labor-tracker',
+        exact: true,
+        title: 'LaborTracker'
     }
 ];

@@ -9,7 +9,7 @@ const MainHamber = ({keyValue,data}) => {
     let location = useLocation();
     const handleMenuClick = (e) => {
         if(e.key === 'add'){
-            history.push(`${location.pathname}-add-labor-record`);
+            history.push(`labor-review-and-posting-add-labor-record`);
         }
     }
     return (

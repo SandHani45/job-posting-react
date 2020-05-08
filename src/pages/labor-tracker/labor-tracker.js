@@ -1,23 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react';
 //components
-import UiPageHeader from './../../views/UiPageHeader'
-import UiTimerButton from './../../views/UiTimerButton'
 import UiGridProgress from './../../views/UiGridProgress'
 import Spinner from './../../views/Spinner'
 // Router
 import {useHistory} from 'react-router-dom';
-//Constants
-import Constants from './../../constants'
 //antd
-import { Row,Col } from 'antd';
+import { Input, Button, Select, Table ,Menu, Dropdown, message } from 'antd';
 // context
 import { GlobalContext } from "./../../context//GlobalState";
 import _ from 'lodash';
 import moment from 'moment'
+import './labor-tracker.scss'
 
-const ProgressTimers = () => {
+const LaborTracker = () => {
   const { getPendingLabor , pendingLabor, startTime} = useContext(GlobalContext);
   const [page, setPage] = useState(1);
+  const [workCellValue, setWorkCellValue] = useState("All");
+  const { Option } = Select;
   const history = useHistory();
     useEffect(() => {
       getPendingLabor()
@@ -50,12 +49,30 @@ const ProgressTimers = () => {
     }else{
       return <Spinner />
     }
+
   return (
     <>
-      <UiPageHeader content={Constants.WORKCELL_PROGRESS_TIMERS} />
-      {tempalte }
+        <div className="labor-tracker">
+            <div className="__work-order">
+                <div className="__mr-2">
+                    <p>Work Cell</p>
+                </div>
+                <div>
+                <Input.Group compact>
+                    <Select value={workCellValue}  name="workCell">
+                        <Option value="All" >{"All"}</Option>
+                    </Select>
+                </Input.Group>
+                </div>
+            </div>
+            <div style={{marginRight: "25px",textAlign:"center"}}>
+                <p >Click a timer to access <br></br> the job </p>
+            </div>
+        </div>
+        {tempalte}
+      
     </>
   ); 
 }
 
-export default ProgressTimers;
+export default LaborTracker;

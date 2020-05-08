@@ -1,31 +1,55 @@
 import React, {useContext} from 'react'
-import { Breadcrumb } from 'antd';
+import BreadcurmbList from './../BreadcurmbList';
 import {
   Link
 } from "react-router-dom";
 import {  useLocation } from 'react-router-dom';
-import { GlobalContext } from "./../../context//GlobalState";
+import { GlobalContext } from "./../../context/GlobalState";
 import './topNavBar.scss'
-function TopNavBar() {
+function TopNavBar(props) {
   const { keyData } = useContext(GlobalContext);
   let location = useLocation();
   let track = keyData.length > 0 ? `/panel-shop/${keyData[0].DEPARTMENT_KEY}` :'/'
-    return (
+  let tempalate
+    if(location.pathname === '/labor-tracker'){
+      return tempalate = (
         <div className="main-flex">
-          <Breadcrumb>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>
-              <a href="">Application Center</a>
-            </Breadcrumb.Item>
-          </Breadcrumb>
           <div>
-            {location.pathname !== '/progress-timers' ? 
-              <Link to="/progress-timers">See All In Progress</Link> 
-              : <Link to={track}>Track Another Job in this Work Cell</Link> 
-              }
-              
+              <BreadcurmbList />
           </div>
         </div>
+      )
+    }else{
+      if(location.pathname === '/progress-timers'){
+        return tempalate = (
+          <div className="main-flex">
+            <div>
+                <BreadcurmbList />
+            </div>
+            <div>
+                <Link to={track}>Track Another Job in this Work Cell</Link>
+            </div>
+          </div>
+        )
+      }else{
+        tempalate = (
+          <div className="main-flex">
+            <div>
+                <BreadcurmbList />
+            </div>
+            <div>
+            <Link to="/progress-timers">See All In Progress</Link> 
+            </div>
+          </div>
+        )
+      }
+    }
+    
+    
+    return (
+        <>
+          {tempalate}
+        </>
     )
 }
 

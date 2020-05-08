@@ -1,0 +1,18 @@
+.labor-tracker{
+    margin-bottom: 50px;
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between;
+    .__work-order{
+        display: flex;
+        .ant-select-selector{
+            width: 181px;
+        }
+        .__mr-2{
+            margin-right: 56px;
+        }
+        .__mr-1{
+            margin-right: 22px;
+        }
+    }
+}
