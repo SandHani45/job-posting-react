@@ -3,7 +3,7 @@ import React, {useContext,useState, useEffect} from 'react'
 //components
 import UiGrid from './../../views/UiGrid'
 import UiPageHeader from './../../views/UiPageHeader';
-import UiTimerButton from './../../views/UiTimerButton'
+import UiTimerButtonComplete from './../../views/UiTimerButtonComplete'
 // context
 import { GlobalContext } from "./../../context/GlobalState";
 //Constants
@@ -56,9 +56,9 @@ import { putPendingLaborService } from './../../service/pendingLabor'
                         </Col>
                         <Col className="gutter-row" span={12}>
                             <div className="big-timer">
-                                <UiTimerButton 
+                                <UiTimerButtonComplete 
                                     name="Complete" 
-                                    time='1:10' 
+                                    time={pendingLaborRecord.START_TIME}
                                     hours='HoursMinutes' 
                                     txtColor="black" 
                                     color="white" 
