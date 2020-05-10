@@ -48,13 +48,10 @@ const App = () => {;
             }
                 <Layout className="layout">
                   <Content style={{ padding: '0 50px' }} > 
-                    
                     <Route exact path="/labor-tracker" component={LaborTracker} />
-                    <Switch>
-                      <Route exact path="/work-cell" component={WorkCell} />
-                      <Route exact path="/" component={WorkCell} />
-                      <Route exact path="/" component={PanelShop} />
-                    </Switch>
+                    <Route exact path="/work-cell" component={WorkCell} />
+                    <Route exact path="/" component={WorkCell} />
+                    <Route exact path="/" component={PanelShop} />
                   </Content>
                 </Layout>
                 <BackButton />
