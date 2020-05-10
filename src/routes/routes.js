@@ -16,7 +16,7 @@ export const Router = (props) => {
                     path={path}
                     render={() => <RouteComponent {...props} routes={routes} />} />;
             })} 
-            {/* <Redirect to={defaultRoute} /> */}
+            <Redirect to={defaultRoute} />
         </Switch>
     );
 };
