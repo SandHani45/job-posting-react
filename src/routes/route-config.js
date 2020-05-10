@@ -20,6 +20,12 @@ export const Routes = [
         title: 'Work Cell'
     },
     {
+        component: WorkCell,
+        path: '/',
+        exact: true,
+        title: 'Work Cell'
+    },
+    {
         component: PanelShop,
         path: '/panel-shop/:id',
         isBreadcrumbVisible: true,

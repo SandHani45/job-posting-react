@@ -17,9 +17,8 @@ function UiTimerButton(props) {
             setStart(start => start + 1);
             if(startTimer !== 'null'){
                 var timer = time !== undefined ? time.split(' '):"0 0"
-                var endTime = moment().format('h:mm:ss')
-                console.log(moment(moment(timer[1],"hh:mm:ss").diff(moment(endTime,"hh:mm:ss"))).format("hh:mm:ss"))
-                var finalTimeSub = moment(moment(endTime,"hh:mm:ss").diff(moment(timer[1],"hh:mm:ss"))).format("hh:mm:ss")
+                var endTime = moment().format('MM-DD-YYYY h:mm:ss')
+                var finalTimeSub = moment(moment(endTime).diff(moment(timer[1],"hh:mm:ss"))).format("hh:mm:ss")
                 setStart(start => start + 1);
                 setStartTimer(finalTimeSub)
             }

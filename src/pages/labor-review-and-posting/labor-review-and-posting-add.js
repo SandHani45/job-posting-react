@@ -7,7 +7,8 @@ import {
     DatePicker,
     TimePicker,
     Row,
-    Button
+    Button,
+    message
   } from 'antd';
 
 import moment from 'moment';
@@ -17,14 +18,16 @@ import {useHistory,useParams} from 'react-router-dom';
 import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
   //components
 import UiPageHeader from './../../views/UiPageHeader'
+import { convertMonthToNumber, convertDateTime } from './../../utile/helpers' 
 import UiGrid from './../../views/UiGrid'
-import UiTimerButton from './../../views/UiTimerButton'
 //Constants
 import Constants from './../../constants'
 //scss 
 import './labor-review-and-posting.scss'
   // service
 import { getProgressTimeStopService, putPendingLaborService } from './../../service/pendingLabor'
+import { getPanelShopService,getWorkOrderService, getWorkCellService } from './../../service/employee';
+
 const { Option } = Select;
 const format = 'HH:mm';
 const { TextArea } = Input;
@@ -33,95 +36,122 @@ const dateFormat = 'YYYY-MM-DD';
 const LaborReviewAndPostingAdd = () => {
   const history = useHistory();
   const {pendingLaborRecord,panelShop, workCellData, getWorkCell, getPanalShop, getPendingLaborRecord } = useContext(GlobalContext);
+  const [customar, setCustomar] = useState('');
   const [page, setPage] = useState([]);
   const [note, setNote] = useState('');
+  const [workOrderNumber, setWorkOrderNumber] = useState('');
   const [startTime, setStartTime] = useState('');
   const [startDate, setStartDate] = useState('');
   const [stopTime, setStopTime] = useState('');
   const [stopDate, setStopDate] = useState('');
+  const [workCell, setWorkCell] = useState('');
+  const [employe, setEmploye] = useState('');
+  const [workCenterName, setWorkCenterName] = useState('');
   const [laborRate, setRaborRate] = useState(Constants.LABOR_RATE[0]);
+  const [employeeUpdate, setEmployeeUpdate] = useState([]);
+  const [workCellUpdate, setWorkCellUpdate] = useState([])
+  const [laborActivityUpdate, setLaborActivityUpdate] = useState([])
   let { id } = useParams();
     useEffect(() => {
-
+      getWorkCellService().then(res=>{
+        setWorkCell(res[0].WORK_CELL_NAME)
+        setWorkCellUpdate(res)
+      })
     }, [1]);
-
+    const onChangeWorkCell = (e) => {
+      workCellUpdate.map(item =>{
+        if(item.WORK_CELL_NAME === e){
+          setWorkCell(e)
+          getPanelShopService(item.DEPARTMENT_KEY).then(res=>{
+            setWorkCenterName(res[0].DESCRIPTION)
+            setEmployeeUpdate(res)
+            setEmploye(res[0].NAME)
+          })
+        }
+      })
+    }
+    const onChangeCustomar = (e) =>{
+      setCustomar(e.target.value);
+    }
     const onChange = (e) => {
-        setNote(e.target.value);
+      setNote(e.target.value);
     }
-    const onChangeStartTime = (time) =>{
-        setStartTime(time);
+    const onChangeEmployee = (e) =>{
+      let update = workCellData.map(item=>{
+        if(e === item.WORK_CELL_NAME){
+          return item
+        }
+      })    
+      setEmploye(e)
     }
-    const onChangeStopTime = (time) =>{
-        setStopTime(time);
+    const completeStartNew = () =>{
+      history.push('/')
     }
-    const onChangeStartDate = (date) =>{
-        setStartDate(date);
+    const onChangeStartTime = (time, timeString) =>{
+        setStartTime(timeString);
     }
-    const onChangeStopDate = (date) =>{
-        setStopDate(date);
+    const onChangeStopTime = (time, timeString) =>{
+        setStopTime(timeString);
+    }
+    const onChangeStartDate = (date, dateString) =>{
+        setStartDate(dateString);
+    }
+    const onChangeStopDate = (date, dateString) =>{
+        setStopDate(dateString);
     }
     const onChangeRate = (value) =>{
         setRaborRate(value)
+    }
+    const onChangeWorkOrder =(e) =>{
+      getWorkOrderService(e.target.value).then(res=>{
+        setLaborActivityUpdate(res)
+        console.log(res)
+      })
+      
+      setWorkOrderNumber(e.target.value)
     }
     const cancleChanges = () =>{
       history.goBack();
     }
     const saveChange = () =>{
-        let serviceParams = {
-            PLANT_KEY: pendingLaborRecord.PLANT_KEY,
-            DEPARTMENT_KEY: pendingLaborRecord.DEPARTMENT_KEY,
-            EMPLOYEE_KEY: pendingLaborRecord.EMPLOYEE_KEY,
-            WORK_CENTER_KEY: pendingLaborRecord.WORK_CENTER_KEY,
-            WORK_CELL_KEY: pendingLaborRecord.WORK_CELL_KEY,
-            LABOR_CLASS: null,
-            WORK_ORDER_NUMBER: pendingLaborRecord.WORK_ORDER_NUMBER,
-            START_TIME: pendingLaborRecord.START_TIME,
-            STOP_TIME: pendingLaborRecord.STOP_TIME,
-            LABOR_TIME: null,
-            LABOR_RATE_TYPE: laborRate,
-            NOTE:note,
-            STATUS: "C"
-        }
-        console.log('saveChange', {
-            stopTime,
-            stopDate,
-            note,
-            laborRate,
-            startTime,
-            startDate
-        })
-    }
-    const onSubmit = (e) => {
-      e.preventDefault();
+      let start_time = convertDateTime(startDate,startTime)
+      let stop_time = convertDateTime(stopDate,stopTime)
       let serviceParams = {
-          PLANT_KEY: pendingLaborRecord.PLANT_KEY,
-          DEPARTMENT_KEY: pendingLaborRecord.DEPARTMENT_KEY,
+          PLANT_KEY: workCellUpdate === null ? page.PLANT_KEY : workCellUpdate.PLANT_KEY,
+          DEPARTMENT_KEY: workCellUpdate === null ? page.DEPARTMENT_KEY : workCellUpdate.DEPARTMENT_KEY,
           EMPLOYEE_KEY: pendingLaborRecord.EMPLOYEE_KEY,
           WORK_CENTER_KEY: pendingLaborRecord.WORK_CENTER_KEY,
           WORK_CELL_KEY: pendingLaborRecord.WORK_CELL_KEY,
           LABOR_CLASS: null,
-          WORK_ORDER_NUMBER: pendingLaborRecord.WORK_ORDER_NUMBER,
-          START_TIME: pendingLaborRecord.START_TIME,
-          STOP_TIME: pendingLaborRecord.STOP_TIME,
+          WORK_ORDER_NUMBER: workOrderNumber,
+          START_TIME: start_time,
+          STOP_TIME: stop_time,
           LABOR_TIME: null,
           LABOR_RATE_TYPE: null,
           STATUS: "C"
       }
-      putPendingLaborService(pendingLaborRecord.KEY, serviceParams).then((res)=>{
-        history.push(`/labor-record-complete/${pendingLaborRecord.KEY}`)
-      })
+        console.log('saveChange', {
+          start_time,
+          stop_time,
+            note,
+            laborRate,
+            startTime,
+            startDate,
+            workOrderNumber,
+            customar
+        })
+        message.success({ content: 'please check data in console '});
+        // putPendingLaborService(pendingLaborRecord.KEY, serviceParams).then((res)=>{
+        //   history.push(`/labor-record-complete/${pendingLaborRecord.KEY}`)
+        // })
     }
-
     const contentHtml = <>
-      {workCellData.length > 0 ? workCellData.map((item, index)=><Option key={index} value={item.WORK_CELL_NAME} >{item.WORK_CELL_NAME}</Option>) : null}
+      {workCellUpdate.length > 0 ? workCellUpdate.map((item, index)=><Option key={index} value={item.WORK_CELL_NAME} >{item.WORK_CELL_NAME}</Option>) : null}
     </>;
     const contentHtmlForEmployee = <>
-      {panelShop.length > 0 ? panelShop.map((item, index)=><Option key={index} value={item.NAME} >{item.NAME}</Option>) : null}
+      {employeeUpdate.length > 0 ? employeeUpdate.map((item, index)=><Option key={index} value={item.NAME} >{item.NAME}</Option>) : null}
     </>;
-    const contentHtmlForRate = <>
-        {Constants.LABOR_RATE.map((item, index)=><Option key={index} value={item} >{item}</Option>)}
-    </>;
-    
+
     return (
       <>
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
@@ -129,41 +159,41 @@ const LaborReviewAndPostingAdd = () => {
           <div>
             <UiPageHeader content={Constants.WORKCELL_PROGRESS_TIMERS} />
             <UiGrid title="Work Order" >
-              <Input placeholder="" name="workOrder" onChange={onChange} />
+              <Input placeholder="Enter Work Order" value={workOrderNumber} name="workOrder" onChange={onChangeWorkOrder} />
             </UiGrid>
             <UiGrid title="Customar" >
-              <Input placeholder="" name="customar" onChange={onChange} />
+              <Input placeholder="Customar" name="customar" value={customar} onChange={onChangeCustomar} />
             </UiGrid>
-             <UiGrid title="Work Cell" >
+            <UiGrid title="Work Cell" >
               <Input.Group compact>
-                <Select defaultValue={pendingLaborRecord.WORK_CELL_NAME} name="workCellName" >
+                <Select value={workCell} onChange={onChangeWorkCell}>
                   {contentHtml}
                 </Select>
               </Input.Group>
             </UiGrid>
             <UiGrid title="Employee" >
               <Input.Group compact>
-                <Select defaultValue={pendingLaborRecord.EMPLOYEE_NAME}  name="employee">
+                <Select value={employe} onChange={onChangeEmployee}>
                   {contentHtmlForEmployee}
                 </Select>
               </Input.Group>
             </UiGrid>
-            <UiGrid title="Labor Performed" >
+            <UiGrid title="Labor Activity" >
               <Input.Group compact>
-              <Select defaultValue={page.INVENTORY_NAME} onChange={onChange} name="laborPerformed">
-                <Option >{page.INVENTORY_NAME}</Option>
-              </Select>
+                <Select value={workCenterName} >
+                  {/* <Option >{workCenterName}</Option> */}
+                </Select>
               </Input.Group>
             </UiGrid>
             <UiGrid title="Start Time" >
               <div className="data-set">
                 <div>
                   <Input.Group compact >
-                    <DatePicker onChange={onChangeStartDate} defaultValue={moment(startDate, dateFormat)} format={dateFormat}/>
+                    <DatePicker onChange={onChangeStartDate}  format={dateFormat}/>
                   </Input.Group>
                 </div>
                 <div>
-                  <TimePicker use12Hours format="h:mm:ss A" onChange={onChange} value={moment(startTime, format)} />
+                  <TimePicker use12Hours format="h:mm:ss" onChange={onChangeStartTime}  />
                 </div>
               </div>
             </UiGrid>
@@ -171,25 +201,18 @@ const LaborReviewAndPostingAdd = () => {
               <div className="data-set">
                 <div>
                   <Input.Group compact>
-                    <DatePicker onChange={onChange} defaultValue={moment(stopDate, dateFormat)} format={dateFormat} />
+                    <DatePicker onChange={onChangeStopDate}  format={dateFormat} />
                   </Input.Group>
                 </div>
                 <div>
-                  <TimePicker use12Hours format="h:mm:ss A" onChange={onChange} value={moment(stopTime, format)} />
+                  <TimePicker use12Hours format="h:mm:ss" onChange={onChangeStopTime}  />
                 </div>
               </div>
             </UiGrid>
-            <UiGrid title="Labor Hours " number={pendingLaborRecord.LABOR_TIME} />
-            <UiGrid title="Labar Rate" >
-              <Input.Group compact>
-                <Select defaultValue={laborRate} value={laborRate} onChange={onChangeRate} >
-                  {contentHtmlForRate}
-                </Select>
-              </Input.Group>
-            </UiGrid>
+            <UiGrid title="Labor Hours" number={pendingLaborRecord.LABOR_TIME} />
             <div >
                 <p>Note *</p>
-                <TextArea rows={4} name='note' value={note} onChange={onChange} placeholder="Note"/>
+                <TextArea rows={4} name='note' value={note}  placeholder="Note"/>
             </div>
             <div className="footer-button">
                 <Button 
