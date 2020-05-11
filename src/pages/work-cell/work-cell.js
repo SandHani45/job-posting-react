@@ -11,6 +11,7 @@ import {useHistory} from 'react-router-dom';
 import { Row } from 'antd';
 // context
 import { GlobalContext } from "./../../context/GlobalState";
+import moment from 'moment'
 
 const WorkCell = () => {
   const [page, setPage] = useState(1);
@@ -33,11 +34,11 @@ const WorkCell = () => {
     getBreadcurmbList('/workcell',name)
     history.push(`/panel-shop/${key}`);
   };
-
+  let dsec = moment.duration('23:59:59')
   return (
     <>
       <UiPageHeader content={Constants.WORKCELL} />
-      <Row gutter={16}>
+      <Row gutter={{ xs: 16, sm: 16, md: 16, lg: 16 }} >
         {workCellData.length >= 1 ? workCellData.map((item, index)=>{
           return <UiCard key={item.KEY } text={item.DEPARTMENT_NAME} name={item.WORK_CELL_NAME} onClickHandler={() => panelShopClick(item.DEPARTMENT_KEY, item.WORK_CELL_NAME)}/>
         }) : <Spinner />}

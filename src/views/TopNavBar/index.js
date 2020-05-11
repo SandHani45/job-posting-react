@@ -27,7 +27,7 @@ function TopNavBar(props) {
                 <BreadcurmbList />
             </div>
             <div>
-                <Link to={track}>Track Another Job in this Work Cell</Link>
+                <a href={track}>Track Another Job in this Work Cell</a>
             </div>
           </div>
         )
@@ -38,7 +38,7 @@ function TopNavBar(props) {
                 <BreadcurmbList />
             </div>
             <div>
-            <Link to="/progress-timers">See All In Progress</Link> 
+            <a href="/progress-timers">See All In Progress</a> 
             </div>
           </div>
         )

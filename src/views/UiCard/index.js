@@ -6,14 +6,14 @@ function UiCard(props) {
   const { text, onClickHandler, name} = props
   return (
     <React.Fragment>
-      <Col className="gutter-row" span={6}>
+      <Col className="gutter-row" xs={20} sm={20} md={10} lg={8} xl={10}>
         <Card
           hoverable
           style={style}
           className="card-body" 
           onClick={onClickHandler}
         >
-          <p  >{text}   </p>
+          <p >{text} </p>
           <p>{name}</p>
         </Card>
       </Col>

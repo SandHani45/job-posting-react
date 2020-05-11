@@ -2,20 +2,25 @@
 import React, {useState,useEffect,useContext} from 'react'
 import moment from 'moment'
 import './ui-button-complete.scss'
-// context
-import { GlobalContext } from "./../../context/GlobalState";
-
+// Helper
+import {convertMS} from './../../utile/helpers'
 function UiTimerButtonComplete(props) {
     const { timerHandler,name,time,hours, color, border,txtColor, width, height} = props;
     const [start, setStart] = useState(0);
     const [startTimer , setStartTimer] = useState(time)
     useEffect(() => {
+        var today = new Date();
         var timer = time !== undefined ? time.split(' '):"0 0"
-        var endTime = moment().format('h:mm:ss')
-        var finalTimeSub = moment(moment(endTime,"hh:mm:ss").diff(moment(timer[1],"hh:mm:ss"))).format("hh:mm:ss")
+        var endTime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        // var endTime = moment().format('h:mm:ss')
+        var startSec = moment.duration(timer[1])
+        var stopSec = moment.duration(endTime)
+        var seconds = stopSec._milliseconds-startSec._milliseconds
+        var convt = convertMS(seconds)
+        var formatConvt = convt.hour + ":" + convt.minute + ":" + convt.seconds
+        console.log(formatConvt)
         setStart(start => start + 1);
-        setStartTimer(finalTimeSub)
-        console.log("------ss", finalTimeSub)
+        setStartTimer(formatConvt)
     }, [1]);
 
     return (

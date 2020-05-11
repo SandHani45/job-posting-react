@@ -61,7 +61,7 @@ import { putPendingLaborService } from './../../service/pendingLabor'
             { pendingLaborRecord !== undefined ?
                 <> 
                     <UiPageHeader content={Constants.PROGRESS_TIME} />
-                    <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                    <Row gutter={{ xs: 24, sm: 24, md: 24, lg: 32 }}>
                         <Col className="gutter-row" span={24}>
                         <div>
                             {console.log(pendingLaborRecord.START_TIME)}
@@ -74,12 +74,14 @@ import { putPendingLaborService } from './../../service/pendingLabor'
                             <UiGrid title={Constants.LOBARACTIVITY}  number={pendingLaborRecord.WORKCENTER_NAME} />
                         </div>
                         </Col>
+                    </Row>
+                    <Row gutter={{ xs: 24, sm: 24, md: 24, lg: 32 }}>
                         <Col className="gutter-row" offset={8} span={5}>
                             <div>
                             <UiTimerButton name="Elasped" time={pendingLaborRecord.START_TIME} hours='HoursMinutes' color="green" />
                             </div>
                         </Col>
-                        <Col className="gutter-row" span={5}>
+                        <Col className="gutter-row" offset={3} span={5}>
                             <div>
                                 <UiTimerButton name="Stop Timer" time='null' hours='Review Labor' color="red" timerHandler={stopTimer}/>
                             </div>

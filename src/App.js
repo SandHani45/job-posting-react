@@ -5,7 +5,7 @@ import UiHeader from './views/UiHeader'
 import TopNavBar  from './views/TopNavBar';
 import Spinner from './views/Spinner'
 // Routers
-import Routes from './routes';
+import { Routes, Router } from './routes';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 // context
 import { GlobalContext } from "./context/GlobalState";
@@ -30,7 +30,7 @@ const App = () => {;
           }
               <Layout className="layout">
                 <Content style={{ padding: '0 50px' }} > 
-                    <Routes />
+                    <Router routes={Routes} defaultRoute={Routes[0].path} />
                 </Content>
               </Layout>
               <BackButton />
