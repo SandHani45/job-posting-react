@@ -125,7 +125,7 @@ export const GlobalProvider = ({ children }) => {
         payload: []
     });
   }
-  
+
   const getPendingLabor = () => {
     getPendingLaborService().then((res)=>{
       dispatch({
@@ -172,15 +172,30 @@ export const GlobalProvider = ({ children }) => {
     })
   }
   const getBreadcurmbList = (path,name) =>{
-    const res = {
-      path:path,
-      name:name
+     let filterValue =  _.uniqBy(state.breadcurmbList, function (e) {
+        return e.name;
+      });
+    if(filterValue){
+      const res = {
+        path:path,
+        name:name
+      }
+      dispatch({
+        type: "GET_BREADCURMB",
+        payload: res
+      });
     }
-    dispatch({
-      type: "GET_BREADCURMB",
-      payload: res
-    });
   }
+
+  const breadcurmbAction = (path,name) =>{
+    let indexVal = state.breadcurmbList.findIndex(itemValue=>{
+        if(itemValue.name === name){
+            return itemValue
+        }
+    })
+    state.breadcurmbList.splice(indexVal,state.breadcurmbList.length)
+    }
+
 
   return (
     <GlobalContext.Provider
@@ -209,7 +224,8 @@ export const GlobalProvider = ({ children }) => {
         isActiveFun,
         getPendingLaborRecord,
         getLaborPostingFilter,
-        getBreadcurmbList
+        getBreadcurmbList,
+        breadcurmbAction
       }}
     >
       {children}
