@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { Input, Button, Select, Table ,Menu, Dropdown, message } from 'antd';
 import './labor-review-and-posting.scss'
 import { getLaborPostingFilterService, getPendingLaborService, deletePendingLaborService } from './../../service/pendingLabor'
+import { getWorkCellService } from './../../service/employee'
 import Spinner from './../../views/Spinner'
 import MaintenancePageDetailDropdown from './../../views/MainHamber/MaintenancePageDetailDropdown'
 import { AgGridReact } from 'ag-grid-react'
-
+import _ from 'lodash'
 class LaborReviewAndPosting extends Component {
     constructor(props) {
         super(props);
@@ -106,7 +107,10 @@ class LaborReviewAndPosting extends Component {
           ],
           defaultColDef: { sortable: true, filter: true, resizable: true, menuTabs: ['filterMenuTab'] },
           rowData: [],
+          rowFilterData:[],
           errors: [],
+          plant:{},
+          plantFilter:'All',
           printMode: /print/g.test(match),
           inputValue:{
             workOrder:''
@@ -114,11 +118,16 @@ class LaborReviewAndPosting extends Component {
         }
         this.handleClick = this.handleClick.bind(this);
         this.onChangeHandler = this.onChangeHandler.bind(this);
+        this.onChangePlantFilter = this.onChangePlantFilter.bind(this);
     }
     componentDidMount(){
         getPendingLaborService(this.state.inputValue.workOrder)
         .then(this.assignListingData)
         .catch(error => console.log(error))
+        getWorkCellService().then(res=>{
+          this.setState({plant:res})
+        })
+
     }
     assignListingData = rowData => {
       if (rowData) {
@@ -133,10 +142,11 @@ class LaborReviewAndPosting extends Component {
             START_TIME: data.START_TIME,
             STOP_TIME: data.STOP_TIME,
             LABOR_TIME: data.LABOR_TIME,
-            LABOR_RATE_TYPE: data.LABOR_RATE_TYPE
+            LABOR_RATE_TYPE: data.LABOR_RATE_TYPE,
+            INVENTORY_NAME:data.INVENTORY_NAME
           }
         })
-        this.setState({ rowData: formattedrowData })
+        this.setState({ rowData: formattedrowData, rowFilterData:formattedrowData })
       }
     }
 
@@ -176,6 +186,18 @@ class LaborReviewAndPosting extends Component {
             }
         })
     }
+    // filter the Plant Value 
+    onChangePlantFilter(value){
+      let rowFilter = _.filter(this.state.rowFilterData, function(item){
+        if(item.INVENTORY_NAME === value){
+          return item
+        }
+      })
+      this.setState({
+        plantFilter:value,
+        rowData:rowFilter
+      })
+    }
     onSelectChange = selectedRowKeys => {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys });
@@ -208,8 +230,9 @@ class LaborReviewAndPosting extends Component {
                     </div>
                     <div>
                     <Input.Group compact>
-                        <Select defaultValue={'All'}  name="plant">
-                            <Option value="one" >{"one"}</Option>
+                        <Select value={this.state.plantFilter}  name="plant" onChange={this.onChangePlantFilter}>
+                            {/* {this.state. plant.length > 0 ? this.state. plant.map(item)} */}
+                            {this.state.plant.length > 0 ? this.state.plant.map((item, index)=><Option key={index} value={item.DEPARTMENT_NAME} >{item.DEPARTMENT_NAME}</Option>) : null}
                         </Select>
                     </Input.Group>
                     </div>

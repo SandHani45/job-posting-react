@@ -43,7 +43,7 @@
 }
 .supervisor{
   display: flex;
-  width: 122px;
+  width: 20%;
   justify-content: space-around;
 }
 .back-button{
@@ -52,4 +52,23 @@
 .end{
   display: flex!important;
   justify-content: flex-end;
+}
+.labor{
+  display: flex;
+  justify-content: space-around;
+  width: 180px;
+}
+.ant-breadcrumb{
+  span:last-child a{
+    color: #096dd9;
+}
+  .ant-breadcrumb-link{
+    a{
+      text-decoration: underline;
+      color: #096dd9;
+    }
+  }
+}
+.error-all{
+  color: red;
 }

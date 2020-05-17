@@ -38,7 +38,7 @@ const App = (props) => {
             <Router routes={Routes} defaultRoute={Routes[0].path} />
           </Content>
         </Layout>
-        {/* <BackButton /> */}
+        <BackButton />
       </Suspense>
     </GlobalProvider>
   );

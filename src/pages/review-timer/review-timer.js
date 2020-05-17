@@ -39,6 +39,7 @@ const ReviewTimer = () => {
   const {pendingLaborRecord, workCellData, getWorkCell } = useContext(GlobalContext);
   const [page, setPage] = useState([]);
   const [note, setNote] = useState('');
+  const [error, setError] = useState(false);
   const [workOrderNumber, setWorkOrderNumber] = useState('');
   const [startTime, setStartTime] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -96,7 +97,28 @@ const ReviewTimer = () => {
       setEmploye(e)
     }
     const completeStartNew = () =>{
-      history.push('/')
+      let start_time = convertDateTime(startDate,startTime)
+      let stop_time = convertDateTime(stopDate,stopTime)
+      let serviceParams = {
+          PLANT_KEY: workCellUpdate === null ? page.PLANT_KEY : workCellUpdate.PLANT_KEY,
+          DEPARTMENT_KEY: workCellUpdate === null ? page.DEPARTMENT_KEY : workCellUpdate.DEPARTMENT_KEY,
+          EMPLOYEE_KEY: pendingLaborRecord.EMPLOYEE_KEY,
+          WORK_CENTER_KEY: pendingLaborRecord.WORK_CENTER_KEY,
+          WORK_CELL_KEY: pendingLaborRecord.WORK_CELL_KEY,
+          LABOR_CLASS: null,
+          WORK_ORDER_NUMBER: workOrderNumber,
+          START_TIME: start_time,
+          STOP_TIME: stop_time,
+          NOTE:note,
+          LABOR_TIME: null,
+          LABOR_RATE_TYPE: null,
+          STATUS: "C"
+      }
+      putPendingLaborService(pendingLaborRecord.KEY, serviceParams).then((res)=>{
+        message.success({ content: 'Successfully Recorded ' });
+        history.push('/')
+      })
+      
     }
     const onChangeStartTime = (time, timeString) =>{
         setStartTime(timeString);
@@ -120,6 +142,7 @@ const ReviewTimer = () => {
       e.preventDefault();
       let start_time = convertDateTime(startDate,startTime)
       let stop_time = convertDateTime(stopDate,stopTime)
+
       let serviceParams = {
           PLANT_KEY: workCellUpdate === null ? page.PLANT_KEY : workCellUpdate.PLANT_KEY,
           DEPARTMENT_KEY: workCellUpdate === null ? page.DEPARTMENT_KEY : workCellUpdate.DEPARTMENT_KEY,
@@ -130,10 +153,20 @@ const ReviewTimer = () => {
           WORK_ORDER_NUMBER: workOrderNumber,
           START_TIME: start_time,
           STOP_TIME: stop_time,
+          NOTE:note,
           LABOR_TIME: null,
           LABOR_RATE_TYPE: null,
           STATUS: "C"
       }
+      if(note.length > 0){
+        putPendingLaborService(pendingLaborRecord.KEY, serviceParams).then((res)=>{
+          message.success({ content: 'Successfully Recorded ' });
+          history.push(`/labor-record-complete/${pendingLaborRecord.KEY}`)
+        })
+      }else{
+        setError(true)
+      }
+      console.log(serviceParams)
       let serviceParams1 = {
         PLANT_KEY: pendingLaborRecord.PLANT_KEY,
         DEPARTMENT_KEY: pendingLaborRecord.DEPARTMENT_KEY,
@@ -148,10 +181,7 @@ const ReviewTimer = () => {
         LABOR_RATE_TYPE: null,
         STATUS: "C"
     }
-      putPendingLaborService(pendingLaborRecord.KEY, serviceParams).then((res)=>{
-        message.success({ content: 'Successfully Recorded ' });
-        history.push(`/labor-record-complete/${pendingLaborRecord.KEY}`)
-      })
+      
     }
 
     const contentHtml = <>
@@ -179,7 +209,7 @@ const ReviewTimer = () => {
             </UiGrid>
             <UiGrid title="Customar " number={page.CUST_NAME} />
             <UiGrid title="Plant " number={workCellUpdate === null ? page.PLANT_KEY : workCellUpdate.PLANT_KEY}  />
-            <UiGrid title="Departement " 
+            <UiGrid title="Department" 
               number={workCellUpdate === null ? page.DEPARTMENT_KEY : workCellUpdate.DEPARTMENT_KEY} 
               desc={workCellUpdate === null ? page.DEPARTMENT_NAME : workCellUpdate.DEPARTMENT_NAME} 
             />
@@ -204,13 +234,6 @@ const ReviewTimer = () => {
                 </Select>
               </Input.Group>
             </UiGrid>
-            <UiGrid title="Labor Performed" >
-              <Input.Group compact>
-                <Select defaultValue={page.INVENTORY_NAME} value={page.INVENTORY_NAME} onChange={onChangeRate} name="laborPerformed">
-                  <Option >{page.INVENTORY_NAME}</Option>
-                </Select>
-              </Input.Group>
-            </UiGrid>
             <UiGrid title="Start Time" >
               <div className="data-set">
                 <div>
@@ -219,7 +242,7 @@ const ReviewTimer = () => {
                   </Input.Group>
                 </div>
                 <div>
-                  <TimePicker use12Hours format="h:mm:ss" onChange={onChangeStartTime} value={moment(startTime, format)} />
+                  <TimePicker use12Hours format="h:mm" onChange={onChangeStartTime} value={moment(startTime, format)} />
                 </div>
               </div>
             </UiGrid>
@@ -231,7 +254,7 @@ const ReviewTimer = () => {
                   </Input.Group>
                 </div>
                 <div>
-                  <TimePicker use12Hours format="h:mm:ss" onChange={onChangeStopTime} value={moment(stopTime, format)} />
+                  <TimePicker use12Hours format="h:mm" onChange={onChangeStopTime} value={moment(stopTime, format)} />
                 </div>
               </div>
             </UiGrid>
@@ -241,7 +264,8 @@ const ReviewTimer = () => {
         <Col className="gutter-row" span={12}>
             <div>
               <p>Note *</p>
-              <TextArea rows={4} name='note' value={note} onChange={onChange} placeholder="Note"/>
+              <TextArea rows={4} name='note' value={note} onChange={onChange} placeholder="Note" />
+              {error && <p className="error-all">Note Required </p>}
             </div>
             <div className="check-time-button">
               <input type="submit" className="time-button yellow" value="Complete Tracking" />

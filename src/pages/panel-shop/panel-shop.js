@@ -1,5 +1,4 @@
 import React, {useState,useEffect, useContext} from 'react'
-import { useParams } from "react-router-dom";
 //components
 import UiCard from './../../views/UiCard'
 import UiPageHeader from './../../views/UiPageHeader'
@@ -7,12 +6,12 @@ import UiPageHeader from './../../views/UiPageHeader'
 import Constants from './../../constants'
 // Antd
 import { Row } from 'antd';
-import {useHistory} from 'react-router-dom';
+import {useHistory, useParams} from 'react-router-dom';
 // context
 import { GlobalContext } from "./../../context//GlobalState";
-
+import BackButton from './../../views/BackButton'
 const PanelShop = () => {
-    const { panelShop , getBreadcurmbList, getKeyData ,keyData} = useContext(GlobalContext);
+    const { panelShop , getBreadcurmbList, getKeyData ,keyData, breadcurmbList, breadcurmbAction} = useContext(GlobalContext);
     let { id } = useParams();
     const history = useHistory();
     useEffect(() => {
@@ -33,7 +32,9 @@ const PanelShop = () => {
       getBreadcurmbList(`/panel-shop/${id}`,name)
       history.push(`/job-posting-employee/${key}`);
     };
-  
+      // const backButtonAction = (item) =>{
+      //   breadcurmbAction(`/panel-shop/${id}`, item.name)
+      // }
     return (
         <>
         <UiPageHeader content={Constants.PANALSHOP} />
@@ -42,6 +43,7 @@ const PanelShop = () => {
               return <UiCard key={index } text={`#${item.EMPLOYEE}`} name={item.NAME} onClickHandler={() => jobPosting(item.EMPLOYEE, item.NAME)}/>
             }):  null}
           </Row>
+          {/* <BackButton /> */}
         </>
     )
 }

@@ -56,6 +56,7 @@ const LaborReviewAndPostingEdit = () => {
         setStopTime(stop[1])
         setStopDate(convertMonthToNumber(stop[0]))
         setLaborPerform(res[0].INVENTORY_NAME)
+        setNote(res[0].NOTE)
       })
     }, [1]);
 
@@ -101,7 +102,6 @@ const LaborReviewAndPostingEdit = () => {
             NOTE:note,
             STATUS: "C"
         }
-        console.log(laborRate, start_time, stop_time)
         putPendingLaborService(page.KEY, serviceParams).then((res)=>{
           message.success({ content: 'Successfully Updated ' });
           history.push(`/labor-review-and-posting`)
@@ -137,7 +137,7 @@ const LaborReviewAndPostingEdit = () => {
                   </Input.Group>
                 </div>
                 <div>
-                  <TimePicker use12Hours format="h:mm:ss" onChange={onChangeStartTime} value={moment(startTime, format)} />
+                  <TimePicker use12Hours format="h:mm" onChange={onChangeStartTime} value={moment(startTime, format)} />
                 </div>
               </div>
             </UiGrid>
@@ -149,7 +149,7 @@ const LaborReviewAndPostingEdit = () => {
                   </Input.Group>
                 </div>
                 <div>
-                  <TimePicker use12Hours format="h:mm:ss" onChange={onChangeStopTime} value={moment(stopTime, format)} />
+                  <TimePicker use12Hours format="h:mm" onChange={onChangeStopTime} value={moment(stopTime, format)} />
                 </div>
               </div>
             </UiGrid>

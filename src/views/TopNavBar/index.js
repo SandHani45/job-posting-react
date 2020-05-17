@@ -3,6 +3,7 @@ import BreadcurmbList from './../BreadcurmbList';
 import {
   Link
 } from "react-router-dom";
+import { PlusCircleOutlined } from '@ant-design/icons';
 import {  useLocation } from 'react-router-dom';
 import { GlobalContext } from "./../../context/GlobalState";
 import './topNavBar.scss'
@@ -26,8 +27,8 @@ function TopNavBar(props) {
             <div>
                 <BreadcurmbList />
             </div>
-            <div>
-                <a href={track}>Track Another Job in this Work Cell</a>
+            <div className="icon-link">
+              <span><PlusCircleOutlined /></span> <a href={track}>Track Another Job in this Work Cell</a>
             </div>
           </div>
         )
@@ -38,7 +39,7 @@ function TopNavBar(props) {
                 <BreadcurmbList />
             </div>
             <div>
-            <a href="/progress-timers">See All In Progress</a> 
+            <a href="/progress-timers">See All In Progress Timers</a> 
             </div>
           </div>
         )

@@ -2,4 +2,14 @@
     display: flex;
     width: 300px;
     justify-content: space-between;
+    align-items: center;
+}
+.bold{
+    font-weight: 500;
+}
+.error{
+    color: red !important;
+    margin-left: 15%;
+    margin-top: 5%;
+
 }

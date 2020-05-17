@@ -49,22 +49,32 @@ export const GlobalProvider = ({ children }) => {
   }
 
   const getWorkOrder = (id) => {
-    let key = state.keyData[0].DEPARTMENT_KEY
-    getWorkOrderService(id).then((res)=>{
-        if(res[0].STATUS_MESSAGE === null){
+    return new Promise((resolve, reject) => {
+      let key = state.keyData[0].DEPARTMENT_KEY
+      getWorkOrderService(id).then((res)=>{
+        if(res.length > 0){
+          if(res[0].STATUS_MESSAGE === null){
             getLaborActivityService(key,id).then((res)=>{
+                resolve(res)
                 dispatch({
                     type: "GET_WORK_ORDER",
                     payload: res
                 });
-            })
+            }).catch(error=> reject(error))
+          }
         }else{
+          let error = {
+            status:'no data',
+            message:'Please enter valid Work order No Data Found '
+          }
+          reject(error)
           dispatch({
             type: "ERROR",
-            payload: res
-        });
-       }
-    })
+            payload: error
+          });
+         }
+      }).catch(error=> reject(error))
+    }) 
   }
 
   const getLaborConfirm = (serviceParams) => {
@@ -194,9 +204,7 @@ export const GlobalProvider = ({ children }) => {
         }
     })
     state.breadcurmbList.splice(indexVal,state.breadcurmbList.length)
-    }
-
-
+  }
   return (
     <GlobalContext.Provider
       value={{

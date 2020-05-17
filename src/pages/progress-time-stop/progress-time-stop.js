@@ -11,7 +11,8 @@ import Constants from './../../constants'
 import _ from 'lodash'
 import {useHistory,useParams} from 'react-router-dom';
 import { Button,Row, Col } from 'antd';
-
+import moment from 'moment'
+import {convertMS} from './../../utile/helpers'
 // service
 import { putPendingLaborService } from './../../service/pendingLabor'
 
@@ -35,6 +36,16 @@ import { putPendingLaborService } from './../../service/pendingLabor'
         let splitTime = tempTime.split(',')
         let time = splitTime[1]
         let stopTime = [finalDate, time].join(' ')
+        //**********convater  */
+        var timer = pendingLaborRecord.START_TIME !== undefined ? pendingLaborRecord.START_TIME.split(' '):"0 0"
+        var endTime = tempDate.getHours() + ":" + tempDate.getMinutes() + ":" + tempDate.getSeconds();
+        // var endTime = moment().format('h:mm:ss')
+        var startSec = moment.duration(timer[1])
+        var stopSec = moment.duration(endTime)
+        var seconds = stopSec._milliseconds-startSec._milliseconds
+        var convt = convertMS(seconds)
+        var formatConvt = convt.hour + ":" + convt.minute + ":" + convt.seconds
+        // ********************//
         let serviceParams = {
             PLANT_KEY: pendingLaborRecord.PLANT_KEY,
             DEPARTMENT_KEY: pendingLaborRecord.DEPARTMENT_KEY,
@@ -49,6 +60,7 @@ import { putPendingLaborService } from './../../service/pendingLabor'
             LABOR_RATE_TYPE: null,
             STATUS: "I"
         }
+        console.log(serviceParams)
         putPendingLaborService(id, serviceParams).then((res)=>{
             if(res){
                 history.push('/review-timer')

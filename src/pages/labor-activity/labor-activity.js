@@ -52,7 +52,8 @@ import { Row } from 'antd';
               return <UiCard 
                         key={index }  
                         text={`#${item.CODE}`} 
-                        name={item.DESCRIPTION} 
+                        name={item.DESCRIPTION}
+                        outline={item.WODEXISTS} 
                         onClickHandler={() => laborActivityClick(item.CODE, item.DESCRIPTION)}
                       />
             }): 'No Data'}

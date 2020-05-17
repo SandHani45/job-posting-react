@@ -193,7 +193,7 @@ const LaborReviewAndPostingAdd = () => {
                   </Input.Group>
                 </div>
                 <div>
-                  <TimePicker use12Hours format="h:mm:ss" onChange={onChangeStartTime}  />
+                  <TimePicker use12Hours format="h:mm" onChange={onChangeStartTime}  />
                 </div>
               </div>
             </UiGrid>
@@ -205,7 +205,7 @@ const LaborReviewAndPostingAdd = () => {
                   </Input.Group>
                 </div>
                 <div>
-                  <TimePicker use12Hours format="h:mm:ss" onChange={onChangeStopTime}  />
+                  <TimePicker use12Hours format="h:mm" onChange={onChangeStopTime}  />
                 </div>
               </div>
             </UiGrid>

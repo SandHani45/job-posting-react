@@ -1,5 +1,5 @@
 const CONSTANTS = {
-    WORKCELL: 'Clock in to a Work Cell',
+    WORKCELL: 'Clock into a Work Cell',
     JOBPOSTING: 'Which Job Are You Posting Labor To',
     LABORCONFIRM:'Post Labor To',
     WORKORDER:'Work Order',
@@ -9,7 +9,7 @@ const CONSTANTS = {
     WORKCELLS:'Work Cell',
     EMPLOYEE:'Employee',
     LOBARACTIVITY: 'Labor Activity',
-    WORKCELL_PROGRESS_TIMERS: 'Work Cell Panal Shop In Progress Timers ',
+    WORKCELL_PROGRESS_TIMERS: 'Work Cell Panal Shop Wiring In Progress Timers ',
     PANALSHOP:'Which Employee is Posting Labor in Panel Shop Wiring',
     LABOR_ACTIVITY:'Which labor Activity is Being Performed',
     PROGRESS_TIME:'In Progress Timer',

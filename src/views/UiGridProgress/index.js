@@ -13,7 +13,7 @@ function UiGridProgress(props) {
         },
         colorGreen:{
             color:'green',
-            padding: '8px 0',
+            // padding: '8px 0',
             fontWeight: '500'
         }
     }
@@ -21,9 +21,9 @@ function UiGridProgress(props) {
     <React.Fragment>
          <div className="ui-grid-progress" >
             <hr></hr>
-            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                <Col className="gutter-row" span={3}>
-                    <div style={style} >
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} className="ui-grid-flex" style={styles.bold}>
+                <Col className="gutter-row" span={4}>
+                    <div style={style} className="ui-grid-progress__grid">
                         <p>Employee</p>
                         <p>Work Order</p>
                         <p>Labor Activity</p>
@@ -36,10 +36,10 @@ function UiGridProgress(props) {
                         <p>{activity}</p>
                     </div>
                 </Col>
-                <Col className="gutter-row" span={8}>
+                <Col className="gutter-row" span={7}>
                     <div style={style} className="ui-grid-progress__grid">
                         <p style={styles.bold}>{employeName}</p>
-                        <p>{woDes} </p>
+                        <p style={styles.bold}>{woDes} </p>
                         <p style={styles.bold}>{wcName} </p>
                     </div>
                 </Col>

@@ -5,3 +5,14 @@
     margin-top: 15px;
     margin-bottom: 15px;
   }
+  .icon-link{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    span{
+      font-size: 25px;
+      /* margin-left: 32px; */
+      margin-right: 2px;
+    }
+
+  }

@@ -29,6 +29,7 @@ const ProgressTimers = () => {
     let tempalte
     if(progressDataFilter){
       let data =  _.filter(progressDataFilter, function(item) { return item.STOP_TIME === null });
+      console.log(data)
       tempalte = (
         data.map((item, index)=>{
           let itemStartTime = _.split(item.START_TIME, ' ');
@@ -42,7 +43,7 @@ const ProgressTimers = () => {
                 start_time_count={item.START_TIME}
                 employeName={item.EMPLOYEE_NAME}
                 wcName={item.WORK_CELL_NAME}
-                woDes={item.WO_DESCRIPTION}
+                woDes={item.WO_DESCRIPTION == null ? 'null' : item.WO_DESCRIPTION}
                 timerHandler={() => timerHandler(item.KEY)} 
             />
         })
@@ -52,7 +53,7 @@ const ProgressTimers = () => {
     }
   return (
     <>
-      <UiPageHeader content={Constants.WORKCELL_PROGRESS_TIMERS} />
+      <UiPageHeader content={Constants.WORKCELL_PROGRESS_TIMERS} progress={true} />
       {tempalte }
     </>
   ); 
