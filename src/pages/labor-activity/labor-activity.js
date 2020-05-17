@@ -5,6 +5,7 @@ import UiCard from './../../views/UiCard'
 import UiPageHeader from './../../views/UiPageHeader'
 // context
 import { GlobalContext } from "./../../context/GlobalState";
+import BackButton from './../../views/BackButton'
 //Constants
 import Constants from './../../constants'
 // Antd
@@ -58,6 +59,7 @@ import { Row } from 'antd';
                       />
             }): 'No Data'}
           </Row>
+          <BackButton />
         </>
     )
 }

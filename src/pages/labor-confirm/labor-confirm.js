@@ -8,6 +8,7 @@ import { GlobalContext } from "./../../context/GlobalState";
 //Constants
 import Constants from './../../constants'
 import _ from 'lodash'
+import BackButton from './../../views/BackButton'
 import {useHistory} from 'react-router-dom';
 import { Button,Row, Col } from 'antd';
 //SCSS
@@ -92,6 +93,7 @@ import { postPendingLaborService } from './../../service/pendingLabor'
                         <div ><Button type="primary" className="start-button green" onClick={startHandler} >Start Tracking</Button> </div>
                     </Col>
                 </Row>
+                <BackButton />
             </> : null }
             
         </>

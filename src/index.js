@@ -8,12 +8,13 @@ import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter } from 'react-router-dom';
-
+import { HashRouter } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+const history = createBrowserHistory();
 ReactDOM.render(
-  <BrowserRouter>
+  <HashRouter history={ history }>
     <App />
-  </BrowserRouter>,
+  </HashRouter>,
   document.getElementById('root'),
 );
 

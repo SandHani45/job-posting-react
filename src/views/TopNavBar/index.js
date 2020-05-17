@@ -12,23 +12,23 @@ function TopNavBar(props) {
   let location = useLocation();
   let track = keyData.length > 0 ? `/panel-shop/${keyData[0].DEPARTMENT_KEY}` :'/'
   let tempalate
-    if(location.pathname === '/labor-tracker'){
+    if(location.pathname.includes('/labor-tracker')){
       return tempalate = (
         <div className="main-flex">
           <div>
-              <BreadcurmbList />
+              {/* <BreadcurmbList /> */}
           </div>
         </div>
       )
     }else{
-      if(location.pathname === '/progress-timers'){
+      if(location.pathname.includes('/progress-timers')){
         return tempalate = (
           <div className="main-flex">
             <div>
-                <BreadcurmbList />
+                {/* <BreadcurmbList /> */}
             </div>
             <div className="icon-link">
-              <span><PlusCircleOutlined /></span> <a href={track}>Track Another Job in this Work Cell</a>
+              <span><PlusCircleOutlined /></span> <Link to={track}>Track Another Job in this Work Cell</Link>
             </div>
           </div>
         )
@@ -39,7 +39,7 @@ function TopNavBar(props) {
                 <BreadcurmbList />
             </div>
             <div>
-            <a href="/progress-timers">See All In Progress Timers</a> 
+            <Link to="/progress-timers">See All In Progress Timers</Link> 
             </div>
           </div>
         )

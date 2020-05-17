@@ -14,29 +14,14 @@ export default function BackButton() {
         breadcurmbAction(breadcurmbList[len].path, breadcurmbList[len].name)
     }
     const history = useHistory();
-    let tempalate
-    // Back Button
-    const goBack = () => {
-        history.goBack();
-    }
-    if(window.location.pathname === "/work-cell"){
-        tempalate= null
-    }else{
-        tempalate = ( <Layout className="layout">
-        <Content style={{ padding: '0 50px' }} > 
-          <Button type="primary" className="back-button" onClick={onClickBreadcrumb} icon={<ArrowLeftOutlined  />}>Back</Button>
-        </Content>
-      </Layout>)
-    }
-    if(window.location.pathname.includes("/labor-review-and-posting")){
-        tempalate= null
-    }
-    if(window.location.pathname === "/labor-tracker"){
-        tempalate=null
-    }
+
     return (
         <>
-            {tempalate}
+            <Layout className="layout">
+                <Content  > 
+                <Button type="primary" className="back-button" onClick={onClickBreadcrumb} icon={<ArrowLeftOutlined  />}>Back</Button>
+                </Content>
+            </Layout>
         </>
     )
 }

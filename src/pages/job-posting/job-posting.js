@@ -8,7 +8,7 @@ import { GlobalContext } from "./../../context/GlobalState";
 import Constants from './../../constants'
 import './job-posting.scss'
 import { Input, Button  } from 'antd';
-
+import BackButton from './../../views/BackButton'
 const JobPosting = (props) => {
     let { id } = useParams();
     const [page, setPage] = useState(1);
@@ -57,6 +57,7 @@ const JobPosting = (props) => {
                     {error && <p className="error"> * Please enter valid Work order</p> }
                 </div>
             </>
+            <BackButton />
             
         </>
     )

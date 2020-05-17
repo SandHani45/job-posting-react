@@ -43,7 +43,7 @@ const PanelShop = () => {
               return <UiCard key={index } text={`#${item.EMPLOYEE}`} name={item.NAME} onClickHandler={() => jobPosting(item.EMPLOYEE, item.NAME)}/>
             }):  null}
           </Row>
-          {/* <BackButton /> */}
+          <BackButton />
         </>
     )
 }

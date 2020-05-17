@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Breadcrumb } from 'antd';
 import { GlobalContext } from "./../../context/GlobalState";
 import _ from 'lodash'
-const BreadcurmbList = (props)  =>{
+const BreadcurmbList = ()  =>{
     const { breadcurmbList, breadcurmbAction } = useContext(GlobalContext);
     const onClickBreadcrumb =(item) =>{
         breadcurmbAction(item.path, item.name)
