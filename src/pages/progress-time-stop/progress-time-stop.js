@@ -56,7 +56,7 @@ import { putPendingLaborService } from './../../service/pendingLabor'
             WORK_ORDER_NUMBER: pendingLaborRecord.WORK_ORDER_NUMBER,
             START_TIME: pendingLaborRecord.START_TIME,
             STOP_TIME: stopTime,
-            LABOR_TIME: null,
+            LABOR_TIME: formatConvt,
             LABOR_RATE_TYPE: null,
             STATUS: "I"
         }

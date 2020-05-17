@@ -154,7 +154,7 @@ const ReviewTimer = () => {
           START_TIME: start_time,
           STOP_TIME: stop_time,
           NOTE:note,
-          LABOR_TIME: null,
+          LABOR_TIME: page.LABOR_TIME,
           LABOR_RATE_TYPE: null,
           STATUS: "C"
       }
@@ -258,7 +258,7 @@ const ReviewTimer = () => {
                 </div>
               </div>
             </UiGrid>
-            <UiGrid title="Labor Hours" number={pendingLaborRecord.LABOR_TIME} />
+            <UiGrid title="Labor Hours" number={page.LABOR_TIME} />
           </div>
         </Col>
         <Col className="gutter-row" span={12}>
